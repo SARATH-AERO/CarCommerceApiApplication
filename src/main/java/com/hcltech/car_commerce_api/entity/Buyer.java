@@ -3,7 +3,9 @@ package com.hcltech.car_commerce_api.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -37,7 +39,6 @@ public class Buyer {
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
 
-
     @PrePersist
     protected void onCreate(){
         modifiedDate = new Date();
@@ -47,4 +48,8 @@ public class Buyer {
     protected void onUpdate(){
         modifiedDate = new Date();
     }
+
+    @OneToMany()
+    @JoinColumn(name = "buyer_id")
+    private List<PurchasedCar> purchasedCarsList;
 }

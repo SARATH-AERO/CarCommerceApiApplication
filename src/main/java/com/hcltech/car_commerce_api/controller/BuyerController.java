@@ -1,13 +1,12 @@
 package com.hcltech.car_commerce_api.controller;
 
 import com.hcltech.car_commerce_api.dto.BuyerDTO;
+import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.service.BuyerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.GetExchange;
 
 @RestController
 @RequestMapping("/buyer")
@@ -27,15 +26,22 @@ public class BuyerController {
     }
 
     @GetMapping
-    public ResponseEntity<BuyerDTO> getBuyerByEmail(@RequestParam String email){
-        BuyerDTO buyerDTO = buyerService.getBuyerByEmail(email);
-        return new ResponseEntity<>(buyerDTO, HttpStatus.OK);
+    public ResponseEntity<Buyer> getBuyerByEmail(@RequestParam String email){
+        Buyer buyer = buyerService.getBuyerByEmail(email);
+        return new ResponseEntity<>(buyer, HttpStatus.OK);
     }
 
     @PutMapping
     public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody BuyerDTO buyerDTO ) throws Exception {
-        String response = buyerService.updateUser(email,buyerDTO);
+        String response = buyerService.udpateBuyer(email,buyerDTO);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteBuyer(@RequestParam String email){
+        String response = buyerService.deleteBuyer(email);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
 }

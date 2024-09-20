@@ -2,6 +2,7 @@ package com.hcltech.car_commerce_api.dao;
 
 import com.hcltech.car_commerce_api.dto.BuyerDTO;
 import com.hcltech.car_commerce_api.entity.Buyer;
+import com.hcltech.car_commerce_api.exception.BuyerEmailAlreadyExistsException;
 import com.hcltech.car_commerce_api.repo.BuyerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,24 +21,26 @@ public class BuyerDAO {
         this.modelMapper = modelMapper;
     }
 
-    public String createBuyer(Buyer buyer){
-        buyerRepository.save(buyer);
-        return buyer.getFirstName() + " buyer added successfully";
+    public Buyer createBuyer(Buyer buyer){
+        return buyerRepository.save(buyer);
     }
 
-    public Buyer getBuyerByEmail(String email) {
-        Optional<Buyer> buyer = Optional.ofNullable(buyerRepository.findByEmail(email));
-        return buyer.get();
+    public Optional<Buyer> getBuyerByEmail(String email) {
+        return buyerRepository.findByEmail(email);
     }
 
-    public String updateBuyer(String email,Buyer updateBuyer) throws Exception {
-        Optional<Buyer> extisitingBuyer = Optional.ofNullable(buyerRepository.findByEmail(email));
+    public String updateBuyer(String email,BuyerDTO updateBuyerDTO) throws Exception {
+        Optional<Buyer> existingBuyer = buyerRepository.findByEmail(email);
 
-        if(extisitingBuyer.isEmpty())
+        if(existingBuyer.isEmpty())
             throw new Exception(email + " buyer not present");
-        Buyer modifiedBuyer = extisitingBuyer.get();
-        modelMapper.map(updateBuyer, modifiedBuyer);
+        Buyer modifiedBuyer = existingBuyer.get();
+        modelMapper.map(updateBuyerDTO, modifiedBuyer);
         buyerRepository.save(modifiedBuyer);
         return modifiedBuyer.getEmail()+" buyer details added successfully";
+    }
+
+    public int deleteBuyer(String email){
+        return buyerRepository.deleteByEmail(email);
     }
 }
