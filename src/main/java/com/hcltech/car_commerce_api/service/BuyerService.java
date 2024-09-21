@@ -23,11 +23,11 @@ public class BuyerService {
         this.buyerDAO = buyerDAO;
     }
 
-    public String createUser(BuyerDTO buyerDTO){
+    public String createBuyer(BuyerDTO buyerDTO){
 
         Optional<Buyer> buyer =  buyerDAO.getBuyerByEmail(buyerDTO.getEmail());
         if(buyer.isPresent())
-            throw new BuyerEmailAlreadyExistsException(buyerDTO.getEmail() + " email address is already used");
+            throw new BuyerEmailAlreadyExistsException(buyerDTO.getEmail() + " email address is already exists. Please choose a different email.");
 
          buyerDAO.createBuyer(toBuyerEntity(buyerDTO));
          return buyerDTO.getFirstName()+" buyer added successfully";
@@ -44,7 +44,7 @@ public class BuyerService {
 
     public String udpateBuyer(String email, BuyerDTO buyerDTO) throws Exception {
 
-        Optional<Buyer> buyer =  buyerDAO.getBuyerByEmail(buyerDTO.getEmail());
+        Optional<Buyer> buyer =  buyerDAO.getBuyerByEmail(email);
         if(buyer.isEmpty())
             throw new BuyerNotFoundException("Buyer not found with email: " + email);
 

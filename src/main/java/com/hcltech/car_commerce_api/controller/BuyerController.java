@@ -3,13 +3,14 @@ package com.hcltech.car_commerce_api.controller;
 import com.hcltech.car_commerce_api.dto.BuyerDTO;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.service.BuyerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/buyer")
+@RequestMapping("/api/buyer")
 public class BuyerController {
 
     private BuyerService buyerService;
@@ -20,9 +21,9 @@ public class BuyerController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createUser(@RequestBody BuyerDTO buyerDTO){
-        String response = buyerService.createUser(buyerDTO);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<String> createBuyer(@Valid @RequestBody BuyerDTO buyerDTO){
+        String response = buyerService.createBuyer(buyerDTO);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @GetMapping
