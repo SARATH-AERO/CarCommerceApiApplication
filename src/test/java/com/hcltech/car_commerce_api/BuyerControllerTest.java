@@ -5,43 +5,28 @@ import com.hcltech.car_commerce_api.dto.BuyerDTO;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.exception.BuyerNotFoundException;
 import com.hcltech.car_commerce_api.service.BuyerService;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.condition.DisabledIfSystemProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.*;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.mock.http.server.reactive.MockServerHttpRequest.post;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -64,7 +49,6 @@ class BuyerControllerTest {
                 .firstName("sarath")
                 .lastName("sekar")
                 .address("village road, sholing nalloor")
-                .city("chennai")
                 .phoneNumber("8985623412")
                 .postalCode("600119")
                 .licenseNumber("hdft5569dd")
@@ -92,7 +76,6 @@ class BuyerControllerTest {
                 .firstName("sarath")
                 .lastName("sekar")
                 .address("village road, sholinga nalloor")
-                .city("chennai")
                 .phoneNumber("8985623412")
                 .postalCode("600119")
                 .licenseNumber("hdft5569dd")
@@ -117,14 +100,13 @@ class BuyerControllerTest {
                 .firstName("sarath")
                 .lastName("sekar")
                 .address("village road, sholinga nalloor")
-                .city("chennai")
                 .phoneNumber("8985623412")
                 .postalCode("600119")
                 .licenseNumber("hdft5569dd")
                 .build();
-        String expectedResponse = buyerDTO.getEmail()+" buyer details added successfully";;
+        String expectedResponse = buyerDTO.getEmail()+" buyer details added successfully";
 
-        when(buyerService.udpateBuyer(eq(email), any(BuyerDTO.class))).thenReturn(expectedResponse);
+        when(buyerService.updateBuyer(eq(email), any(BuyerDTO.class))).thenReturn(expectedResponse);
 
         // Act and Assert
         mockMvc.perform(put("/api/buyer")

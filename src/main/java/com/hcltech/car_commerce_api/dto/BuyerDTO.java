@@ -1,12 +1,10 @@
 package com.hcltech.car_commerce_api.dto;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
-import java.util.Date;
 
 @Getter
 @Setter
@@ -18,6 +16,9 @@ public class BuyerDTO {
     @NotNull(message = "Email cannot be null")
     @Email(message = "Email should be valid")
     private String email;
+
+    @NotNull(message = "Password cannot be null")
+    private String password;
 
     @NotNull(message = "Firstname cannot be null")
     private String firstName;
@@ -31,9 +32,6 @@ public class BuyerDTO {
 
     @NotNull(message = "Address cannot be null")
     private String address;
-
-    @NotNull(message = "City cannot be null")
-    private String city;
 
     @NotNull(message = "Postal code cannot be null")
     @Pattern(regexp = "^\\d{6}$", message = "Postal Code should be 6 digits and contain only numbers")

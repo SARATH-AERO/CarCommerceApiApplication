@@ -1,7 +1,6 @@
 package com.hcltech.car_commerce_api.repo;
 
 import com.hcltech.car_commerce_api.entity.Buyer;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,6 +12,7 @@ import java.util.Optional;
 public interface BuyerRepository extends JpaRepository<Buyer, Integer> {
 
     Optional<Buyer> findByEmail(String email);
+
     @Modifying
     @Transactional
     int deleteByEmail(String email);

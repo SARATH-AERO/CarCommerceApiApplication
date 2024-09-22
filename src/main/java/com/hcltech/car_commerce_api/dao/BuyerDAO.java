@@ -2,34 +2,37 @@ package com.hcltech.car_commerce_api.dao;
 
 import com.hcltech.car_commerce_api.dto.BuyerDTO;
 import com.hcltech.car_commerce_api.entity.Buyer;
-import com.hcltech.car_commerce_api.exception.BuyerEmailAlreadyExistsException;
+import com.hcltech.car_commerce_api.repo.AuthorityRepository;
 import com.hcltech.car_commerce_api.repo.BuyerRepository;
+import com.hcltech.car_commerce_api.repo.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Service
+@Repository
 public class BuyerDAO {
 
-    private BuyerRepository buyerRepository;
-    private ModelMapper modelMapper;
+    private final BuyerRepository buyerRepository;
+    private final ModelMapper modelMapper;
 
-    public BuyerDAO(BuyerRepository buyerRepository, ModelMapper modelMapper) {
+    @Autowired
+    public BuyerDAO(BuyerRepository buyerRepository, ModelMapper modelMapper, UserRepository userRepository, AuthorityRepository authorityRepository) {
         this.buyerRepository = buyerRepository;
         this.modelMapper = modelMapper;
     }
 
-    public Buyer createBuyer(Buyer buyer){
-        return buyerRepository.save(buyer);
+    public void createBuyer(Buyer buyer){
+         buyerRepository.save(buyer);
+
     }
 
     public Optional<Buyer> getBuyerByEmail(String email) {
         return buyerRepository.findByEmail(email);
     }
 
-    public String updateBuyer(String email,BuyerDTO updateBuyerDTO) throws Exception {
+    public void updateBuyer(String email,BuyerDTO updateBuyerDTO) throws Exception {
         Optional<Buyer> existingBuyer = buyerRepository.findByEmail(email);
 
         if(existingBuyer.isEmpty())
@@ -37,7 +40,6 @@ public class BuyerDAO {
         Buyer modifiedBuyer = existingBuyer.get();
         modelMapper.map(updateBuyerDTO, modifiedBuyer);
         buyerRepository.save(modifiedBuyer);
-        return modifiedBuyer.getEmail()+" buyer details added successfully";
     }
 
     public int deleteBuyer(String email){

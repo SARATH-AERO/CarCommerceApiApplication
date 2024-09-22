@@ -3,10 +3,8 @@ package com.hcltech.car_commerce_api.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
-
 
 @Entity
 @Getter
@@ -19,37 +17,43 @@ public class Buyer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private long id; //local to your database
 
     @Column(unique = true,nullable = false)
     private String email;
+
+    @NonNull
     private String firstName;
+
+    @NonNull
     private String lastName;
+
     @Column(length = 10,nullable = false)
     private String phoneNumber;
+
+    @NonNull
     private String address;
-    private String city;
+
     @Column(length = 6, nullable = false)
     private String postalCode;
+
     @Column(length = 15,nullable = false)
     private String licenseNumber;
 
-    @Basic(optional = false)
-    @Column(updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date modifiedDate;
+
+    private LocalDateTime updatedAt;
 
     @PrePersist
     protected void onCreate(){
-        modifiedDate = new Date();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
-    protected void onUpdate(){
-        modifiedDate = new Date();
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
-    @OneToMany()
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "buyer_id")
     private List<PurchasedCar> purchasedCarsList;
 }

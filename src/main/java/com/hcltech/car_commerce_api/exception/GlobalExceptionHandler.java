@@ -2,15 +2,20 @@ package com.hcltech.car_commerce_api.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 
+import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -45,22 +50,46 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex){
         Map<String, Object> response = new HashMap<>();
+        Map<String, String> errors = ex.getBindingResult().getFieldErrors().stream()
+                .collect(Collectors.toMap(FieldError::getField, error ->
+                        Optional.ofNullable(error.getDefaultMessage()).orElse("Unknown error")));
+
+
         response.put("timestamp", LocalDateTime.now());
         response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("errors", new HashMap<String, String>());
-
-        ex.getBindingResult().getAllErrors().forEach((error)-> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            ((Map<String,String>) response.get("errors")).put(fieldName, errorMessage);
-        } );
+        response.put("errors", errors);
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> handleBadCredentialsException(BadCredentialsException ex,WebRequest request) {
+        Map<String, Object> resonseBody = new HashMap<>();
+        resonseBody.put("timestamp", LocalDateTime.now());
+        resonseBody.put("status", HttpStatus.UNAUTHORIZED.value());
+        resonseBody.put("error", "Conflict");
+        resonseBody.put("message", ex.getMessage());
+        resonseBody.put("path", request.getDescription(false));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(resonseBody);
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        Map<String, Object> body = new HashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("status", HttpStatus.FORBIDDEN.value()); // This should be 403
+        body.put("error", "Forbidden");
+        body.put("message", "Access Denied: You do not have the necessary permissions to access this resource.");
+        body.put("path", request.getDescription(false));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 
     // Handle all other exceptions globally
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest request) {
+        ex.printStackTrace();
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
