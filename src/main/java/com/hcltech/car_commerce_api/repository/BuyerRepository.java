@@ -1,4 +1,4 @@
-package com.hcltech.car_commerce_api.repo;
+package com.hcltech.car_commerce_api.repository;
 
 import com.hcltech.car_commerce_api.entity.Buyer;
 import jakarta.transaction.Transactional;

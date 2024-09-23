@@ -5,13 +5,15 @@ import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.repo.AuthorityRepository;
 import com.hcltech.car_commerce_api.repo.BuyerRepository;
 import com.hcltech.car_commerce_api.repo.UserRepository;
+import com.hcltech.car_commerce_api.repository.BuyerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Repository
+@Service
 public class BuyerDAO {
 
     private final BuyerRepository buyerRepository;

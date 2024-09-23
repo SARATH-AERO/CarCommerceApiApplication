@@ -3,7 +3,6 @@ package com.hcltech.car_commerce_api.controller;
 import com.hcltech.car_commerce_api.dto.BuyerDTO;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.service.BuyerService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +29,7 @@ public class BuyerController {
 
     @GetMapping
     public ResponseEntity<Buyer> getBuyerByEmail(@RequestParam String email){
-        Buyer buyer = buyerService.getBuyerByEmail(email);
-        return new ResponseEntity<>(buyer, HttpStatus.OK);
+        return new ResponseEntity<>(buyerService.getBuyerByEmail(email), HttpStatus.OK);
     }
 
     @PutMapping
