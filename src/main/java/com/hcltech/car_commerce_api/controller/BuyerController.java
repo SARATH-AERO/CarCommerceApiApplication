@@ -30,8 +30,7 @@ public class BuyerController {
 
     @GetMapping
     public ResponseEntity<Buyer> getBuyerByEmail(@RequestParam String email){
-        Buyer buyer = buyerService.getBuyerByEmail(email);
-        return new ResponseEntity<>(buyer, HttpStatus.OK);
+        return new ResponseEntity<>(buyerService.getBuyerByEmail(email), HttpStatus.OK);
     }
 
     @PutMapping
