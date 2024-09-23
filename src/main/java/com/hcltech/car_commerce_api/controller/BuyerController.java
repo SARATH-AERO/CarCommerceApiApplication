@@ -26,20 +26,18 @@ public class BuyerController {
 
     @GetMapping
     public ResponseEntity<Buyer> getBuyerByEmail(@RequestParam String email){
-        Buyer buyer = buyerService.getBuyerByEmail(email);
-        return new ResponseEntity<>(buyer, HttpStatus.OK);
+        return new ResponseEntity<>(buyerService.getBuyerByEmail(email), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody BuyerDTO buyerDTO ) throws Exception {
-        String response = buyerService.udpateBuyer(email,buyerDTO);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody BuyerDTO buyerDTO )
+            throws Exception {
+        return new ResponseEntity<>(buyerService.udpateBuyer(email,buyerDTO), HttpStatus.OK);
     }
 
     @DeleteMapping
     public ResponseEntity<String> deleteBuyer(@RequestParam String email){
-        String response = buyerService.deleteBuyer(email);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>( buyerService.deleteBuyer(email), HttpStatus.OK);
 
     }
 
