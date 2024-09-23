@@ -1,10 +1,6 @@
 package com.hcltech.car_commerce_api.dto;
 
 import com.hcltech.car_commerce_api.entity.Cars;
-import jakarta.persistence.Basic;
-import jakarta.persistence.Column;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 

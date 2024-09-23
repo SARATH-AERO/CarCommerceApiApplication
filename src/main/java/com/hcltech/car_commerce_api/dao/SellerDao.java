@@ -3,7 +3,6 @@ package com.hcltech.car_commerce_api.dao;
 import com.hcltech.car_commerce_api.dto.SellerDto;
 import com.hcltech.car_commerce_api.entity.Cars;
 import com.hcltech.car_commerce_api.entity.Seller;
-import com.hcltech.car_commerce_api.repository.CarsRepository;
 import com.hcltech.car_commerce_api.repository.SellerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -15,11 +14,11 @@ import java.util.Optional;
 public class SellerDao {
 
     private final SellerRepository sellerRepository;
-    private final CarsRepository carsRepository;
+    private final com.hcltech.car_commerce_api.repository.CarsRepository carsRepository;
     private final ModelMapper modelMapper;
 
     public SellerDao(SellerRepository sellerRepository, ModelMapper modelMapper,
-                     CarsRepository carsRepository) {
+                     com.hcltech.car_commerce_api.repository.CarsRepository carsRepository) {
         this.sellerRepository = sellerRepository;
         this.modelMapper = modelMapper;
         this.carsRepository =carsRepository;

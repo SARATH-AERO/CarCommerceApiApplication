@@ -1,11 +1,8 @@
 package com.hcltech.car_commerce_api.controller;
 
-import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.dto.SellerDto;
-import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.entity.Cars;
 import com.hcltech.car_commerce_api.entity.Seller;
-import com.hcltech.car_commerce_api.service.BuyerService;
 import com.hcltech.car_commerce_api.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

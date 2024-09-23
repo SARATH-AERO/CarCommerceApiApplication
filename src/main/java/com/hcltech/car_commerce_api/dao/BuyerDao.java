@@ -43,6 +43,7 @@ public class BuyerDao {
     }
 
     public int deleteBuyer(String email){
+
         return buyerRepository.deleteByEmail(email);
     }
 }

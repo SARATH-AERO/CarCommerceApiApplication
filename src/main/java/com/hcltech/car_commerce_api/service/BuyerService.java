@@ -1,14 +1,12 @@
 package com.hcltech.car_commerce_api.service;
 
-import com.hcltech.car_commerce_api.dao.AuthorityDao;
-import com.hcltech.car_commerce_api.dao.BuyerDao;
-import com.hcltech.car_commerce_api.dao.MyUserDao;
+import com.hcltech.car_commerce_api.dao.*;
 import com.hcltech.car_commerce_api.dto.BuyerDto;
-import com.hcltech.car_commerce_api.entity.Authority;
-import com.hcltech.car_commerce_api.entity.Buyer;
-import com.hcltech.car_commerce_api.entity.MyUser;
+import com.hcltech.car_commerce_api.entity.*;
 import com.hcltech.car_commerce_api.exception.BuyerEmailAlreadyExistsException;
 import com.hcltech.car_commerce_api.exception.BuyerNotFoundException;
+import com.hcltech.car_commerce_api.repository.CarsRepository;
+import com.hcltech.car_commerce_api.repository.PurchasedCarRepository;
 import com.hcltech.car_commerce_api.security.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +29,19 @@ public class BuyerService {
     private final JwtUtil jwtUtil;
     private final MyUserDao myUserDAO;
     private final AuthorityDao authorityDAO;
-
+    private final PurchasedCarDao purchasedCarDao;
+    private final CarDao carDao;
 
     @Autowired
-    public BuyerService(ModelMapper modelMapper, BuyerDao buyerDAO, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, MyUserDao myUserDAO, AuthorityDao authorityDAO){
+    public BuyerService(ModelMapper modelMapper, BuyerDao buyerDAO, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, MyUserDao myUserDAO, AuthorityDao authorityDAO, PurchasedCarDao purchasedCarDao, CarDao carDao){
         this.modelMapper = modelMapper;
         this.buyerDAO = buyerDAO;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
         this.myUserDAO = myUserDAO;
         this.authorityDAO = authorityDAO;
+        this.purchasedCarDao = purchasedCarDao;
+        this.carDao = carDao;
     }
 
     public Map<String, String> createBuyer(BuyerDto buyerDto){
@@ -124,4 +125,34 @@ public class BuyerService {
         return modelMapper.map(buyerDTO, Buyer.class);
     }
 
+    public PurchasedCar toPurchasedCarEntity(Cars car){
+        return modelMapper.map(car, PurchasedCar.class);
+    }
+
+    public List<Cars> getAllCars() {
+        return carDao.getAllCars();
+    }
+
+    public Map<String, String> purchaseCar(String email, int carId) {
+
+        Optional<Cars> car =  carDao.findById(carId);
+        Optional<Buyer> buyer = buyerDAO.getBuyerByEmail(email);
+
+        if(buyer.isEmpty()){
+            // buyer not found exception here
+        }
+
+        if(car.isEmpty()){
+            // car not found exception thrown here.
+        }
+
+        PurchasedCar purchasedCar = toPurchasedCarEntity(car.get());
+        purchasedCarDao.addPurchasedCar(purchasedCar);
+        carDao.deleteById(carId);
+
+        Map<String, String> responseJson = new HashMap<>();
+        responseJson.put("message", carId+ " purchased successfully");
+        return responseJson;
+
+    }
 }
