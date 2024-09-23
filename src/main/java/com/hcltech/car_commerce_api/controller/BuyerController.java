@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/buyer")
 public class BuyerController {
 
-    private BuyerService buyerService;
+    private final BuyerService buyerService;
 
     @Autowired
     public BuyerController(BuyerService buyerService){
@@ -21,8 +21,7 @@ public class BuyerController {
 
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody BuyerDTO buyerDTO){
-        String response = buyerService.createUser(buyerDTO);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(buyerService.createUser(buyerDTO), HttpStatus.OK);
     }
 
     @GetMapping
