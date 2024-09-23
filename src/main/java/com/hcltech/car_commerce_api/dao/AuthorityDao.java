@@ -5,10 +5,10 @@ import com.hcltech.car_commerce_api.repo.AuthorityRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AuthorityDAO {
+public class AuthorityDao {
     private final AuthorityRepository authorityRepository;
 
-    public AuthorityDAO(AuthorityRepository authorityRepository) {
+    public AuthorityDao(AuthorityRepository authorityRepository) {
         this.authorityRepository = authorityRepository;
     }
 

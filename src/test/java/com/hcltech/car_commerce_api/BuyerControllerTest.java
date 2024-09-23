@@ -1,7 +1,7 @@
 package com.hcltech.car_commerce_api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcltech.car_commerce_api.dto.BuyerDTO;
+import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.exception.BuyerNotFoundException;
 import com.hcltech.car_commerce_api.service.BuyerService;
@@ -44,7 +44,7 @@ class BuyerControllerTest {
     @Rollback(value = false)
     void createBuyer_shouldReturnOkStatus() throws Exception {
         // Arrange
-        BuyerDTO buyerDTO = BuyerDTO.builder()
+        BuyerDto buyerDTO = BuyerDto.builder()
                 .email("test@gmai.com")
                 .firstName("sarath")
                 .lastName("sekar")
@@ -55,7 +55,7 @@ class BuyerControllerTest {
                 .build();
         String expectedResponse = buyerDTO.getFirstName()+" buyer added successfully";
 
-        when(buyerService.createBuyer(any(BuyerDTO.class))).thenReturn(expectedResponse);
+        when(buyerService.createBuyer(any(BuyerDto.class))).thenReturn(expectedResponse);
 
         // Act and Assert
         mockMvc.perform(MockMvcRequestBuilders.post("/api/buyer")
@@ -95,7 +95,7 @@ class BuyerControllerTest {
     void updateUser_shouldReturnOkStatus() throws Exception {
         // Arrange
         String email = "test@example.com";
-        BuyerDTO buyerDTO = BuyerDTO.builder()
+        BuyerDto buyerDTO = BuyerDto.builder()
                 .email("test@example.com")
                 .firstName("sarath")
                 .lastName("sekar")
@@ -106,7 +106,7 @@ class BuyerControllerTest {
                 .build();
         String expectedResponse = buyerDTO.getEmail()+" buyer details added successfully";
 
-        when(buyerService.updateBuyer(eq(email), any(BuyerDTO.class))).thenReturn(expectedResponse);
+        when(buyerService.updateBuyer(eq(email), any(BuyerDto.class))).thenReturn(expectedResponse);
 
         // Act and Assert
         mockMvc.perform(put("/api/buyer")
@@ -137,24 +137,24 @@ class BuyerControllerTest {
     @Test
     void createBuyer_shouldReturnBadRequestForInvalidInput() throws Exception {
         // List of test cases for invalid inputs
-        List<BuyerDTO> invalidBuyerDTOs = Arrays.asList(
-                new BuyerDTO(null, "John", "Doe", "1234567890", "Address", "City", "600001", "License"), // Invalid email
-                new BuyerDTO("invalid-email", "John", "Doe", "1234567890", "Address", "City", "600001", "License"), // Invalid email format
-                new BuyerDTO("test@example.com", null, "Doe", "1234567890", "Address", "City", "600001", "License"), // Null first name
-                new BuyerDTO("test@example.com", "John", null, "1234567890", "Address", "City", "600001", "License"), // Null last name
-                new BuyerDTO("test@example.com", "John", "Doe", null, "Address", "City", "600001", "License"), // Null phone number
-                new BuyerDTO("test@example.com", "John", "Doe", "12345", "Address", "City", "600001", "License"), // Invalid phone number
-                new BuyerDTO("test@example.com", "John", "Doe", "1234567890", null, "City", "600001", "License"), // Null address
-                new BuyerDTO("test@example.com", "John", "Doe", "1234567890", "Address", null, "600001", "License"), // Null city
-                new BuyerDTO("test@example.com", "John", "Doe", "1234567890", "Address", "City", null, "License"), // Null postal code
-                new BuyerDTO("test@example.com", "John", "Doe", "1234567890", "Address", "City", "12345", "License"), // Invalid postal code
-                new BuyerDTO("test@example.com", "John", "Doe", "1234567890", "Address", "City", "600001", null) // Null license number
+        List<BuyerDto> invalidBuyerDto = Arrays.asList(
+                new BuyerDto(null, "John", "Doe", "1234567890", "Address", "City", "600001", "License"), // Invalid email
+                new BuyerDto("invalid-email", "John", "Doe", "1234567890", "Address", "City", "600001", "License"), // Invalid email format
+                new BuyerDto("test@example.com", null, "Doe", "1234567890", "Address", "City", "600001", "License"), // Null first name
+                new BuyerDto("test@example.com", "John", null, "1234567890", "Address", "City", "600001", "License"), // Null last name
+                new BuyerDto("test@example.com", "John", "Doe", null, "Address", "City", "600001", "License"), // Null phone number
+                new BuyerDto("test@example.com", "John", "Doe", "12345", "Address", "City", "600001", "License"), // Invalid phone number
+                new BuyerDto("test@example.com", "John", "Doe", "1234567890", null, "City", "600001", "License"), // Null address
+                new BuyerDto("test@example.com", "John", "Doe", "1234567890", "Address", null, "600001", "License"), // Null city
+                new BuyerDto("test@example.com", "John", "Doe", "1234567890", "Address", "City", null, "License"), // Null postal code
+                new BuyerDto("test@example.com", "John", "Doe", "1234567890", "Address", "City", "12345", "License"), // Invalid postal code
+                new BuyerDto("test@example.com", "John", "Doe", "1234567890", "Address", "City", "600001", null) // Null license number
         );
 
-        for (BuyerDTO invalidBuyerDTO : invalidBuyerDTOs) {
+        for (BuyerDto invalidBuyerDto : invalidBuyerDtos) {
             mockMvc.perform(MockMvcRequestBuilders.post("/api/buyer")
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(new ObjectMapper().writeValueAsString(invalidBuyerDTO)))
+                            .content(new ObjectMapper().writeValueAsString(invalidBuyerDto)))
                     .andExpect(status().isBadRequest());
         }
 

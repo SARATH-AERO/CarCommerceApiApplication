@@ -1,7 +1,7 @@
 package com.hcltech.car_commerce_api.security;
 
-import com.hcltech.car_commerce_api.entity.Users;
-import com.hcltech.car_commerce_api.repo.UserRepository;
+import com.hcltech.car_commerce_api.entity.MyUser;
+import com.hcltech.car_commerce_api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -25,16 +25,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        Users user = userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException(username +" user not found"));
+        MyUser myUser = userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException(username +" user not found"));
 
-        Set<SimpleGrantedAuthority> authoritySet = user.getAuthorities().stream()
+        Set<SimpleGrantedAuthority> authoritySet = myUser.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
                 .collect(Collectors.toSet());
 
         return new User(
-                user.getUsername(),
-                user.getPassword(),
-                user.isEnabled(),
+                myUser.getUsername(),
+                myUser.getPassword(),
+                myUser.isEnabled(),
                 true,
                 true,
                 true,
