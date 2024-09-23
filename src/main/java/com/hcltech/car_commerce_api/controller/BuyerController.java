@@ -42,11 +42,6 @@ public class BuyerController {
 
     }
 
-
-
-
-
-
     @PutMapping
     public ResponseEntity<?> updateUser(@RequestParam String email,@RequestBody BuyerDto buyerDTO ) throws Exception {
         return ResponseEntity.ok(buyerService.updateBuyer(email,buyerDTO));

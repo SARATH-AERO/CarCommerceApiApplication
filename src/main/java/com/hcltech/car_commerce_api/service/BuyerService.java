@@ -5,8 +5,6 @@ import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.entity.*;
 import com.hcltech.car_commerce_api.exception.BuyerEmailAlreadyExistsException;
 import com.hcltech.car_commerce_api.exception.BuyerNotFoundException;
-import com.hcltech.car_commerce_api.repository.CarsRepository;
-import com.hcltech.car_commerce_api.repository.PurchasedCarRepository;
 import com.hcltech.car_commerce_api.security.JwtUtil;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -84,6 +83,7 @@ public class BuyerService {
 
          final String jwtToken =  jwtUtil.generateToken(userDetails);
         Map<String, String> responseJson = new HashMap<>();
+        responseJson.put("status", "success");
         responseJson.put("message", buyerDto.getFirstName()+" buyer added successfully");
         responseJson.put("token", jwtToken);
          return responseJson;
@@ -106,6 +106,7 @@ public class BuyerService {
 
         buyerDAO.updateBuyer(email, buyerDTO);
         Map<String, String> responseJson = new HashMap<>();
+        responseJson.put("status", "success");
         responseJson.put("message", email+" buyer details updated successfully");
         return responseJson;
     }
@@ -117,6 +118,7 @@ public class BuyerService {
        }
 
         Map<String, String> responseJson = new HashMap<>();
+        responseJson.put("status", "success");
         responseJson.put("message", email+ " buyer deleted successfully");
         return responseJson;
     }
@@ -125,15 +127,11 @@ public class BuyerService {
         return modelMapper.map(buyerDTO, Buyer.class);
     }
 
-    public PurchasedCar toPurchasedCarEntity(Cars car){
-        return modelMapper.map(car, PurchasedCar.class);
-    }
-
     public List<Cars> getAllCars() {
         return carDao.getAllCars();
     }
 
-    public Map<String, String> purchaseCar(String email, int carId) {
+    public Map<String, Object> purchaseCar(String email, int carId) {
 
         Optional<Cars> car =  carDao.findById(carId);
         Optional<Buyer> buyer = buyerDAO.getBuyerByEmail(email);
@@ -146,12 +144,23 @@ public class BuyerService {
             // car not found exception thrown here.
         }
 
-        PurchasedCar purchasedCar = toPurchasedCarEntity(car.get());
-        purchasedCarDao.addPurchasedCar(purchasedCar);
+
+        PurchasedCar purchasedCar = modelMapper.map(car.get(),PurchasedCar.class);
+        buyer.get().getPurchasedCarsList().add(purchasedCar);
+        buyerDAO.createBuyer(buyer.get());
+        purchasedCarDao.addPurchasedCar( purchasedCar);
         carDao.deleteById(carId);
 
-        Map<String, String> responseJson = new HashMap<>();
-        responseJson.put("message", carId+ " purchased successfully");
+        Map<String, Object> responseJson = new HashMap<>();
+        responseJson.put("status", "success");
+        responseJson.put("message", String.format("Car ID: %d with %s purchased successfully", carId, car.get().getCarName()));
+        responseJson.put("data", Map.of(
+                "carId", carId,
+                "carName", car.get().getCarName(),
+                "purchaseDate", LocalDateTime.now().toString(),
+                "paymentStatus", "Completed"
+        ));
+
         return responseJson;
 
     }

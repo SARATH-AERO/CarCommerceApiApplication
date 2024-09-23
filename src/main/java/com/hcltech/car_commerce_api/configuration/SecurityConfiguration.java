@@ -65,13 +65,8 @@ public class SecurityConfiguration {
                             .requestMatchers("/h2-console/**").permitAll()
                             .requestMatchers("/api/login/authenticate").permitAll()
                             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
-                            .requestMatchers(HttpMethod.GET, "/api/buyer").hasRole("BUYER")
-                            .requestMatchers(HttpMethod.PUT, "/api/buyer").hasRole("BUYER")
-                            .requestMatchers(HttpMethod.DELETE, "/api/buyer").hasRole("BUYER")
-
-                            .requestMatchers(HttpMethod.GET, "/api/carCommerceApi/v1/email").hasRole("SELLER")
-                            .requestMatchers(HttpMethod.PUT, "/api/carCommerceApi/v1").hasRole("SELLER")
-                            .requestMatchers(HttpMethod.DELETE, "/api/carCommerceApi/v1").hasRole("SELLER")
+                            .requestMatchers("/api/buyer/**").hasRole("BUYER")
+                            .requestMatchers("/api/carCommerceApi/v1/**").hasRole("SELLER")
                             .anyRequest().authenticated())
                     .sessionManagement(session -> session
                             .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
