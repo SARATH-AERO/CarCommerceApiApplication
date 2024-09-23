@@ -4,6 +4,7 @@ import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.service.BuyerService;
 import com.hcltech.car_commerce_api.service.SellerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +23,7 @@ public class BuyerController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createBuyer(@RequestBody BuyerDto buyerDTO){
+    public ResponseEntity<?> createBuyer(@Valid @RequestBody BuyerDto buyerDTO){
         return new ResponseEntity<>(buyerService.createBuyer(buyerDTO), HttpStatus.CREATED);
     }
 
