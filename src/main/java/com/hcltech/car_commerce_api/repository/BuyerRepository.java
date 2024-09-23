@@ -1,7 +1,6 @@
-package com.hcltech.car_commerce_api.repo;
+package com.hcltech.car_commerce_api.repository;
 
 import com.hcltech.car_commerce_api.entity.Buyer;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

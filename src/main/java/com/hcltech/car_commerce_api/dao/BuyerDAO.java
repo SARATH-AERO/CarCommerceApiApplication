@@ -2,10 +2,8 @@ package com.hcltech.car_commerce_api.dao;
 
 import com.hcltech.car_commerce_api.dto.BuyerDTO;
 import com.hcltech.car_commerce_api.entity.Buyer;
-import com.hcltech.car_commerce_api.exception.BuyerEmailAlreadyExistsException;
-import com.hcltech.car_commerce_api.repo.BuyerRepository;
+import com.hcltech.car_commerce_api.repository.BuyerRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;

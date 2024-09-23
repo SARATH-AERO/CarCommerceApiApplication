@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/buyer")
 public class BuyerController {
 
-    private BuyerService buyerService;
+    private final BuyerService buyerService;
 
     @Autowired
     public BuyerController(BuyerService buyerService){
@@ -21,26 +21,23 @@ public class BuyerController {
 
     @PostMapping
     public ResponseEntity<String> createUser(@RequestBody BuyerDTO buyerDTO){
-        String response = buyerService.createUser(buyerDTO);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(buyerService.createUser(buyerDTO), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<Buyer> getBuyerByEmail(@RequestParam String email){
-        Buyer buyer = buyerService.getBuyerByEmail(email);
-        return new ResponseEntity<>(buyer, HttpStatus.OK);
+        return new ResponseEntity<>(buyerService.getBuyerByEmail(email), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody BuyerDTO buyerDTO ) throws Exception {
-        String response = buyerService.udpateBuyer(email,buyerDTO);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody BuyerDTO buyerDTO )
+            throws Exception {
+        return new ResponseEntity<>(buyerService.udpateBuyer(email,buyerDTO), HttpStatus.OK);
     }
 
     @DeleteMapping
     public ResponseEntity<String> deleteBuyer(@RequestParam String email){
-        String response = buyerService.deleteBuyer(email);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>( buyerService.deleteBuyer(email), HttpStatus.OK);
 
     }
 
