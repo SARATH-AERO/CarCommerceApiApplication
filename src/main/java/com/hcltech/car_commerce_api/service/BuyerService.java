@@ -1,12 +1,12 @@
 package com.hcltech.car_commerce_api.service;
 
-import com.hcltech.car_commerce_api.dao.AuthorityDAO;
-import com.hcltech.car_commerce_api.dao.BuyerDAO;
+import com.hcltech.car_commerce_api.dao.AuthorityDao;
+import com.hcltech.car_commerce_api.dao.BuyerDao;
 import com.hcltech.car_commerce_api.dao.UserDAO;
-import com.hcltech.car_commerce_api.dto.BuyerDTO;
+import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.entity.Authority;
 import com.hcltech.car_commerce_api.entity.Buyer;
-import com.hcltech.car_commerce_api.entity.Users;
+import com.hcltech.car_commerce_api.entity.MyUser;
 import com.hcltech.car_commerce_api.exception.BuyerEmailAlreadyExistsException;
 import com.hcltech.car_commerce_api.exception.BuyerNotFoundException;
 import com.hcltech.car_commerce_api.security.JwtUtil;
@@ -26,15 +26,15 @@ import java.util.stream.Collectors;
 public class BuyerService {
 
     private final ModelMapper modelMapper;
-    private final BuyerDAO buyerDAO;
+    private final BuyerDao buyerDAO;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
     private final UserDAO userDAO;
-    private final AuthorityDAO authorityDAO;
+    private final AuthorityDao authorityDAO;
 
 
     @Autowired
-    public BuyerService(ModelMapper modelMapper, BuyerDAO buyerDAO, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, UserDAO userDAO, AuthorityDAO authorityDAO){
+    public BuyerService(ModelMapper modelMapper, BuyerDao buyerDAO, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, UserDAO userDAO, AuthorityDao authorityDAO){
         this.modelMapper = modelMapper;
         this.buyerDAO = buyerDAO;
         this.passwordEncoder = passwordEncoder;
@@ -43,11 +43,11 @@ public class BuyerService {
         this.authorityDAO = authorityDAO;
     }
 
-    public Map<String, String> createBuyer(BuyerDTO buyerDTO){
+    public Map<String, String> createBuyer(BuyerDto buyerDto){
 
-        Optional<Buyer> buyer =  buyerDAO.getBuyerByEmail(buyerDTO.getEmail());
+        Optional<Buyer> buyer =  buyerDAO.getBuyerByEmail(buyerDto.getEmail());
         if(buyer.isPresent())
-            throw new BuyerEmailAlreadyExistsException(buyerDTO.getEmail() + " email address is already exists. Please choose a different email.");
+            throw new BuyerEmailAlreadyExistsException(buyerDto.getEmail() + " email address is already exists. Please choose a different email.");
 
         Authority buyerAuthority = new Authority();
         buyerAuthority.setAuthority("ROLE_BUYER");
@@ -55,22 +55,22 @@ public class BuyerService {
         authoritiesSet.add(buyerAuthority);
 
         // Encode the password
-        String encodedPassword = passwordEncoder.encode(buyerDTO.getPassword());
+        String encodedPassword = passwordEncoder.encode(buyerDto.getPassword());
 
-        Users user = Users.builder()
-                        .username(buyerDTO.getEmail())
+        MyUser myUser = MyUser.builder()
+                        .username(buyerDto.getEmail())
                         .password(encodedPassword)
                         .enabled(true)
                         .authorities(authoritiesSet).
                         build();
 
-        Set<SimpleGrantedAuthority> grantedAuthoritySet = user.getAuthorities().stream()
+        Set<SimpleGrantedAuthority> grantedAuthoritySet = myUser.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
                 .collect(Collectors.toSet());
 
-        UserDetails userDetails = new User(user.getUsername(),
+        UserDetails userDetails = new User(myUser.getUsername(),
                 encodedPassword,
-                user.isEnabled(),
+                myUser.isEnabled(),
                 true,
                 true,
                 true,
@@ -78,12 +78,12 @@ public class BuyerService {
                 );
 
         authorityDAO.saveAuthority(buyerAuthority);
-        userDAO.saveUser(user);
-        buyerDAO.createBuyer(toBuyerEntity(buyerDTO));
+        userDAO.saveUser(myUser);
+        buyerDAO.createBuyer(toBuyerEntity(buyerDto));
 
          final String jwtToken =  jwtUtil.generateToken(userDetails);
         Map<String, String> responseJson = new HashMap<>();
-        responseJson.put("message", buyerDTO.getFirstName()+" buyer added successfully");
+        responseJson.put("message", buyerDto.getFirstName()+" buyer added successfully");
         responseJson.put("token", jwtToken);
          return responseJson;
 
@@ -97,7 +97,7 @@ public class BuyerService {
         return buyer.get();
     }
 
-    public Map<String,String> updateBuyer(String email, BuyerDTO buyerDTO) throws Exception {
+    public Map<String,String> updateBuyer(String email, BuyerDto buyerDTO) throws Exception {
 
         Optional<Buyer> buyer =  buyerDAO.getBuyerByEmail(email);
         if(buyer.isEmpty())
@@ -120,7 +120,7 @@ public class BuyerService {
         return responseJson;
     }
 
-    public Buyer toBuyerEntity(BuyerDTO buyerDTO){
+    public Buyer toBuyerEntity(BuyerDto buyerDTO){
         return modelMapper.map(buyerDTO, Buyer.class);
     }
 

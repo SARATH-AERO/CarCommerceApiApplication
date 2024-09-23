@@ -1,7 +1,7 @@
 package com.hcltech.car_commerce_api.dao;
 
-import com.hcltech.car_commerce_api.entity.Users;
-import com.hcltech.car_commerce_api.repo.UserRepository;
+import com.hcltech.car_commerce_api.entity.MyUser;
+import com.hcltech.car_commerce_api.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -12,7 +12,7 @@ public class UserDAO {
 
     private final UserRepository userRepository;
 
-    public void saveUser(Users user) {
-        userRepository.save(user);
+    public void saveUser(MyUser myUser) {
+        userRepository.save(myUser);
     }
 }

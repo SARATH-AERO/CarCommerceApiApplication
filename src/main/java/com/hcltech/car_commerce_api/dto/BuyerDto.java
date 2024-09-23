@@ -12,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class BuyerDTO {
+public class BuyerDto {
     @NotNull(message = "Email cannot be null")
     @Email(message = "Email should be valid")
     private String email;

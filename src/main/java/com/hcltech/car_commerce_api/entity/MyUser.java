@@ -3,9 +3,7 @@ package com.hcltech.car_commerce_api.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,7 +13,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-public class Users {
+public class MyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -39,12 +37,12 @@ public class Users {
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
-        updatedAt = LocalDateTime.now(); // Set initial value for updatedAt when created
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDateTime.now(); // Update the value for updatedAt when updated
+        updatedAt = LocalDateTime.now();
     }
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
