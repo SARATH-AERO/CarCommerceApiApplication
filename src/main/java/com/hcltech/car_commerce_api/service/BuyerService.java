@@ -2,7 +2,7 @@ package com.hcltech.car_commerce_api.service;
 
 import com.hcltech.car_commerce_api.dao.AuthorityDao;
 import com.hcltech.car_commerce_api.dao.BuyerDao;
-import com.hcltech.car_commerce_api.dao.UserDAO;
+import com.hcltech.car_commerce_api.dao.MyUserDao;
 import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.entity.Authority;
 import com.hcltech.car_commerce_api.entity.Buyer;
@@ -29,17 +29,17 @@ public class BuyerService {
     private final BuyerDao buyerDAO;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
-    private final UserDAO userDAO;
+    private final MyUserDao myUserDAO;
     private final AuthorityDao authorityDAO;
 
 
     @Autowired
-    public BuyerService(ModelMapper modelMapper, BuyerDao buyerDAO, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, UserDAO userDAO, AuthorityDao authorityDAO){
+    public BuyerService(ModelMapper modelMapper, BuyerDao buyerDAO, PasswordEncoder passwordEncoder, JwtUtil jwtUtil, MyUserDao myUserDAO, AuthorityDao authorityDAO){
         this.modelMapper = modelMapper;
         this.buyerDAO = buyerDAO;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
-        this.userDAO = userDAO;
+        this.myUserDAO = myUserDAO;
         this.authorityDAO = authorityDAO;
     }
 
@@ -78,7 +78,7 @@ public class BuyerService {
                 );
 
         authorityDAO.saveAuthority(buyerAuthority);
-        userDAO.saveUser(myUser);
+        myUserDAO.saveUser(myUser);
         buyerDAO.createBuyer(toBuyerEntity(buyerDto));
 
          final String jwtToken =  jwtUtil.generateToken(userDetails);

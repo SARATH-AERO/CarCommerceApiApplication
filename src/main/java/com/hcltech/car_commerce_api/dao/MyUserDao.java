@@ -5,8 +5,8 @@ import com.hcltech.car_commerce_api.repository.UserRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class UserDAO {
-    public UserDAO(UserRepository userRepository) {
+public class MyUserDao {
+    public MyUserDao(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

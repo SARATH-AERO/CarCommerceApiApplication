@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -34,6 +35,9 @@ public class Seller {
     protected void onCreate() {
         modifiedDate = new Date(); // Set modifiedDate when the entity is created
     }
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "seller_id")
+    private List<Cars> carsList;
 
 
 
