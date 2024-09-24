@@ -8,6 +8,7 @@ import com.hcltech.car_commerce_api.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,24 +24,27 @@ public class SellerController {
         this.sellerService = sellerService;
     }
 
-
     @GetMapping("/email")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<Seller> getSellerByEmail(@RequestParam String email){
         return new ResponseEntity<>(sellerService.getSellerByEmail(email), HttpStatus.OK);
     }
 
     @PutMapping
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody CarDto carDto) throws Exception {
         return new ResponseEntity<>( sellerService.updateSeller(email,carDto), HttpStatus.OK);
     }
 
     @DeleteMapping
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<String> deleteSeller(@RequestParam String email){
         return new ResponseEntity<>(sellerService.deleteSeller(email), HttpStatus.OK);
 
     }
 
     @GetMapping("/cars")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<List<Car>> getAllCars(){
         return ResponseEntity.ok(sellerService.getAllCars());
     }

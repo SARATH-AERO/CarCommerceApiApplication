@@ -18,10 +18,13 @@ public class Seller {
     private Integer id;
     @Column(unique = true,nullable = false)  // Exception
     private String email;
+    @NonNull
     private String firstName;
+    @NonNull
     private String lastName;
     @Column(length = 10,nullable = false)
     private String phoneNumber;
+    @NonNull
     private String address;
     private String city;
     @Column(length = 6,nullable = false)

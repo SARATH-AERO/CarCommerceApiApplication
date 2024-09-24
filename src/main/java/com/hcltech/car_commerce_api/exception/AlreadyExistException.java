@@ -1,15 +1,16 @@
 package com.hcltech.car_commerce_api.exception;
 
+
 import lombok.Getter;
 
 @Getter
 public class AlreadyExistException extends RuntimeException {
 
-    private String message;
+    private String detail;
 
-    public AlreadyExistException(String message) {
+    public AlreadyExistException(String detail) {
 
-        super(String.format("%s already Exist.", message));
+        super(String.format("%s already Exist.", detail));
     }
 
 }

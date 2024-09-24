@@ -4,7 +4,8 @@ import lombok.*;
 @Getter
 @Setter
 public class CarDto
-{    private Integer id;
+{
+    private Integer id;
     private String carName;
     private String model;
     private String brand;

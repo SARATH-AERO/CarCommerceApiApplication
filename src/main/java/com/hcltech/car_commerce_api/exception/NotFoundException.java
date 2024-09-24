@@ -5,11 +5,10 @@ import lombok.Getter;
 @Getter
 public class NotFoundException extends RuntimeException {
 
-    private String message;
+    private String detail;
 
-    public NotFoundException(String message) {
-
-        super(String.format("%s not Found.", message));
+    public NotFoundException(String detail) {
+        super(String.format("%s not Found.", detail));
     }
 
 }

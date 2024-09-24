@@ -27,30 +27,22 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@Nullable HttpServletRequest request,
                                     @Nullable HttpServletResponse response,
                                     @Nullable FilterChain filterChain) throws ServletException, IOException {
-        // Validate inputs
         if (request == null || response == null || filterChain == null) {
             throw new ServletException("Request, Response, and FilterChain cannot be null");
         }
-
-        // Retrieve the Authorization header
         final String authorizationHeader = request.getHeader("Authorization");
 
-        // Validate the presence and format of the Authorization header
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 
-            // Extract the token and username
             String jwtToken = authorizationHeader.substring(7);
             String username = jwtUtil.extractUsername(jwtToken);
 
-            // Authenticate the user if not already authenticated
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 if (jwtUtil.validateToken(jwtToken, username)) {
                     // Extract roles and create authorities
                     Collection<? extends GrantedAuthority> authorities = jwtUtil.extractRolesFromToken(jwtToken).stream()
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
-
-                    // Set the authentication in the security context
                     SecurityContextHolder.getContext().setAuthentication(
                             new UsernamePasswordAuthenticationToken(username, null, authorities));
                 }

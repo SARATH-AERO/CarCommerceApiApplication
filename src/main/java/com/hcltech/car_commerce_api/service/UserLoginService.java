@@ -66,11 +66,11 @@ public class UserLoginService {
         myUserDao.saveUser(myUser);
 
         return LoginDto.builder().message(emailId +"added successfully").jwtToken(
-                generateJet(setUserDetail(encodedPassword,emailId, setGrantedAuthority(myUser))))
+                        generateJwt(setUserDetail(encodedPassword,emailId, setGrantedAuthority(myUser))))
                        .build();
     }
 
-    public String generateJet(UserDetails userDetails){
+    public String generateJwt(UserDetails userDetails){
         return  jwtUtil.generateToken(userDetails);
     }
 
