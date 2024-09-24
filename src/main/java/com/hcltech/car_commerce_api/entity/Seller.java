@@ -26,7 +26,7 @@ public class Seller {
     private String phoneNumber;
     @NonNull
     private String address;
-    private String city;
+
     @Column(length = 6,nullable = false)
     private String postalCode;
 
