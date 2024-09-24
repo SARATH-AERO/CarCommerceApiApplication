@@ -1,30 +1,31 @@
 package com.hcltech.car_commerce_api.dao;
 
-import com.hcltech.car_commerce_api.entity.Cars;
-import com.hcltech.car_commerce_api.repository.CarsRepository;
+import com.hcltech.car_commerce_api.entity.Car;
+import com.hcltech.car_commerce_api.repository.CarRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+
 @Repository
 public class CarDao {
 
-    private final CarsRepository carsRepository;
+    private final CarRepository carRepository;
 
-    public CarDao(CarsRepository carsRepository) {
-        this.carsRepository = carsRepository;
+    public CarDao(CarRepository carRepository) {
+        this.carRepository = carRepository;
     }
 
-    public List<Cars> getAllCars(){
-        return carsRepository.findAll();
+    public List<Car> getAllCars(){
+        return carRepository.findAll();
     }
 
-    public Optional<Cars> findById(int carId) {
-        return carsRepository.findById(carId);
+    public Optional<Car> findById(int carId) {
+        return carRepository.findById(carId);
     }
 
     public void deleteById(int carId){
-        carsRepository.deleteById(carId);
+        carRepository.deleteById(carId);
     }
 }

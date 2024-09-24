@@ -29,9 +29,8 @@ public class SellerDto {
     @NotNull(message = "Phone number cannot be null")
     @Pattern(regexp = "^\\d{10}$", message = "Phone number should be 10 digits and contain only numbers")
     private String phoneNumber;
-    @NotNull(message = "Phone number cannot be null")
-    @NotBlank(message = "Phone number cannot be empty")
-    @Pattern(regexp = "^\\d{10}$", message = "Phone number should be 10 digits and contain only numbers")
+    @NotNull(message = "password cannot be null")
+    @NotBlank(message = "password cannot be empty")
     private String password;
     @NotNull(message = "Address cannot be null")
     @NotBlank(message = "Address cannot be empty")
@@ -40,5 +39,5 @@ public class SellerDto {
     @NotBlank(message = "License number cannot be empty")
     @Pattern(regexp = "^\\d{6}$", message = "Postal Code should be 6 digits and contain only numbers")
     private String postalCode;
-    private List<Car> cars;
+    private List<Car> carList;
 }

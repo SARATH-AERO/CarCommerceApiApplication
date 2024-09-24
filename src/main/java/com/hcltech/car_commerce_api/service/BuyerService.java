@@ -1,10 +1,13 @@
 package com.hcltech.car_commerce_api.service;
 
-import com.hcltech.car_commerce_api.dao.AuthorityDao;
 import com.hcltech.car_commerce_api.dao.BuyerDao;
-import com.hcltech.car_commerce_api.dao.MyUserDao;
+import com.hcltech.car_commerce_api.dao.CarDao;
+import com.hcltech.car_commerce_api.dao.PurchasedCarDao;
 import com.hcltech.car_commerce_api.dto.BuyerDto;
+import com.hcltech.car_commerce_api.dto.ResponseBuyerDto;
 import com.hcltech.car_commerce_api.entity.Buyer;
+import com.hcltech.car_commerce_api.entity.Car;
+import com.hcltech.car_commerce_api.entity.PurchasedCar;
 import com.hcltech.car_commerce_api.exception.AlreadyExistException;
 import com.hcltech.car_commerce_api.exception.NotFoundException;
 import org.modelmapper.ModelMapper;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -19,11 +23,16 @@ public class BuyerService {
 
     private final ModelMapper modelMapper;
     private final BuyerDao buyerDao;
+    private final CarDao carDao;
+    private final PurchasedCarDao purchasedCarDao;
 
     @Autowired
-    public BuyerService(ModelMapper modelMapper, BuyerDao buyerDao){
+    public BuyerService(ModelMapper modelMapper, BuyerDao buyerDao,CarDao carDao
+            ,PurchasedCarDao purchasedCarDao){
         this.modelMapper = modelMapper;
         this.buyerDao = buyerDao;
+        this.carDao = carDao;
+        this.purchasedCarDao =purchasedCarDao;
     }
     public void findBuyerByEmail(String email) {
         Optional<Buyer> buyer = buyerDao.getBuyerByEmail(email);
@@ -36,12 +45,12 @@ public class BuyerService {
     }
 
 
-    public Buyer getBuyerByEmail(String email){
+    public ResponseBuyerDto getBuyerByEmail(String email){
         Optional<Buyer> buyer = buyerDao.getBuyerByEmail(email);
         if(buyer.isEmpty())
             throw new NotFoundException("Buyer email: " + email);
-
-        return buyer.get();
+        ResponseBuyerDto responseBuyerDto = modelMapper.map(buyer.get(), ResponseBuyerDto.class);
+        return responseBuyerDto;
     }
 
     public Map<String,String> updateBuyer(String email, BuyerDto buyerDTO) throws Exception {
@@ -72,14 +81,14 @@ public class BuyerService {
         return modelMapper.map(buyerDTO, Buyer.class);
     }
 
-    public List<Cars> getAllCars() {
+    public List<Car> getAllCars() {
         return carDao.getAllCars();
     }
 
-    public Map<String, Object> purchaseCar(String email, int carId) {
+    public Map<String, Object> purchaseCar(String email, Integer carId) {
 
-        Optional<Cars> car =  carDao.findById(carId);
-        Optional<Buyer> buyer = buyerDAO.getBuyerByEmail(email);
+        Optional<Car> car =  carDao.findById(carId);
+        Optional<Buyer> buyer = buyerDao.getBuyerByEmail(email);
 
         if(buyer.isEmpty()){
             // buyer not found exception here
@@ -92,8 +101,8 @@ public class BuyerService {
 
         PurchasedCar purchasedCar = modelMapper.map(car.get(),PurchasedCar.class);
         buyer.get().getPurchasedCarsList().add(purchasedCar);
-        buyerDAO.createBuyer(buyer.get());
-        purchasedCarDao.addPurchasedCar( purchasedCar);
+        buyerDao.createBuyer(buyer.get());
+        purchasedCarDao.addPurchasedCar(purchasedCar);
         carDao.deleteById(carId);
 
         Map<String, Object> responseJson = new HashMap<>();
@@ -107,6 +116,5 @@ public class BuyerService {
         ));
 
         return responseJson;
-
     }
 }

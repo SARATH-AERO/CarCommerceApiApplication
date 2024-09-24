@@ -1,6 +1,7 @@
 package com.hcltech.car_commerce_api.controller;
 
 import com.hcltech.car_commerce_api.dto.BuyerDto;
+import com.hcltech.car_commerce_api.dto.ResponseBuyerDto;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.service.BuyerService;
 import com.hcltech.car_commerce_api.service.SellerService;
@@ -25,17 +26,19 @@ public class BuyerController {
 
     @GetMapping
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<Buyer> getBuyerByEmail(@RequestParam String email){
+    public ResponseEntity<ResponseBuyerDto> getBuyerByEmail(@RequestParam String email){
         return new ResponseEntity<>(buyerService.getBuyerByEmail(email), HttpStatus.OK);
     }
 
     @GetMapping("/getAllCars")
+    @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> getAllCars(){
         return new ResponseEntity<>(buyerService.getAllCars(), HttpStatus.OK);
     }
 
     @PutMapping("/carPurchase")
-    public ResponseEntity<?> purchaseCar(@RequestParam String email, @RequestParam int carId){
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    public ResponseEntity<?> purchaseCar(@RequestParam String email, @RequestParam Integer carId){
         return new ResponseEntity<>(buyerService.purchaseCar(email, carId), HttpStatus.OK);
 
     }
@@ -47,7 +50,6 @@ public class BuyerController {
     }
 
     @DeleteMapping
-
     @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<?> deleteBuyer(@RequestParam String email){
         return ResponseEntity.ok(buyerService.deleteBuyer(email));

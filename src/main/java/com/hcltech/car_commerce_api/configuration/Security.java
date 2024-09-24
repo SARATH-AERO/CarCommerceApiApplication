@@ -32,12 +32,10 @@ public class Security {
     }
 
 
-    private static final String[] AUTHENTICATION_WHITE_LISTED = { "/h2-console/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
-            "/swagger-ui/index.html",
-            "/api/authentication/**",
-            "/swagger-resources/**"   };
+    private static final String[] AUTHENTICATION_WHITE_LISTED = {
+            "/api/authentication/**", "/h2-console/**",
+            "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
+             };
 
 
     @Bean
