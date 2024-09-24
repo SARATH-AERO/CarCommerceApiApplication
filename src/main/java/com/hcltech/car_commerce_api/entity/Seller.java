@@ -28,7 +28,6 @@ public class Seller {
     private String postalCode;
 
     @Basic(optional = false)
-    // @Column(insertable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
     @PrePersist
@@ -37,7 +36,7 @@ public class Seller {
     }
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")
-    private List<Cars> carsList;
+    private List<Car> carList;
 
 
 

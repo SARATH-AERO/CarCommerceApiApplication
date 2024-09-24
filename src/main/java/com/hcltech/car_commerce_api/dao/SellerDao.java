@@ -1,9 +1,9 @@
 package com.hcltech.car_commerce_api.dao;
 
-import com.hcltech.car_commerce_api.dto.SellerDto;
-import com.hcltech.car_commerce_api.entity.Cars;
+import com.hcltech.car_commerce_api.dto.CarDto;
+import com.hcltech.car_commerce_api.entity.Car;
 import com.hcltech.car_commerce_api.entity.Seller;
-import com.hcltech.car_commerce_api.repository.CarsRepository;
+import com.hcltech.car_commerce_api.repository.CarRepository;
 import com.hcltech.car_commerce_api.repository.SellerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -15,14 +15,14 @@ import java.util.Optional;
 public class SellerDao {
 
     private final SellerRepository sellerRepository;
-    private final CarsRepository carsRepository;
+    private final CarRepository carRepository;
     private final ModelMapper modelMapper;
 
     public SellerDao(SellerRepository sellerRepository, ModelMapper modelMapper,
-                     CarsRepository carsRepository) {
+                     CarRepository carRepository) {
         this.sellerRepository = sellerRepository;
         this.modelMapper = modelMapper;
-        this.carsRepository =carsRepository;
+        this.carRepository = carRepository;
     }
 
     public void createSeller(Seller seller){
@@ -33,22 +33,20 @@ public class SellerDao {
         return sellerRepository.findByEmail(email);
     }
 
-    public String updateSeller(String email, SellerDto updateSellerDto) throws Exception {
+    public String updateSeller(String email, CarDto carDto) throws Exception {
         Optional<Seller> existingSeller = sellerRepository.findByEmail(email);
-
         if(existingSeller.isEmpty())
             throw new Exception(email + " seller not present");
-        Seller modifiedSeller = existingSeller.get();
-        modelMapper.map(updateSellerDto, modifiedSeller);
-        sellerRepository.save(modifiedSeller);
-        return modifiedSeller.getEmail()+" buyer details added successfully";
+        modelMapper.map(carDto, existingSeller.get());
+        sellerRepository.save(existingSeller.get());
+        return email+" buyer details added successfully";
     }
 
     public int deleteSeller(String email){
         return sellerRepository.deleteByEmail(email);
     }
 
-    public List<Cars> getAllCars() {
-        return carsRepository.findAll();
+    public List<Car> getAllCars() {
+        return carRepository.findAll();
     }
 }

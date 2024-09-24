@@ -21,7 +21,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,13 +28,11 @@ import java.util.Map;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-public class SecurityConfiguration {
-
+public class Security {
 
     private final JwtFilter jwtFilter;
-
     @Autowired
-    public SecurityConfiguration(JwtFilter jwtFilter) {
+    public Security(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
 
@@ -60,10 +57,8 @@ public class SecurityConfiguration {
                     .csrf(AbstractHttpConfigurer::disable)  // <=csrf -> csrf.disable()
                     // Disable CSRF for stateless applications
                     .authorizeHttpRequests(auth -> auth
-                            .requestMatchers(HttpMethod.POST, "/api/buyer").permitAll()
-                            .requestMatchers(HttpMethod.POST, "/api/carCommerceApi/v1").permitAll()
                             .requestMatchers("/h2-console/**").permitAll()
-                            .requestMatchers("/api/login/authenticate").permitAll()
+                            .requestMatchers("/api/authentication/**").permitAll()
                             .requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**").permitAll()
                             .requestMatchers(HttpMethod.GET, "/api/buyer").hasRole("BUYER")
                             .requestMatchers(HttpMethod.PUT, "/api/buyer").hasRole("BUYER")

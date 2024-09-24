@@ -3,7 +3,7 @@ package com.hcltech.car_commerce_api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.entity.Buyer;
-import com.hcltech.car_commerce_api.exception.BuyerNotFoundException;
+import com.hcltech.car_commerce_api.exception.NotFoundException;
 import com.hcltech.car_commerce_api.service.BuyerService;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ class BuyerControllerTest {
                 .build();
         String expectedResponse = buyerDTO.getFirstName()+" buyer added successfully";
 
-        when(buyerService.createBuyer(any(BuyerDto.class))).thenReturn(expectedResponse);
+       // when(buyerService.createBuyer(any(BuyerDto.class))).thenReturn(expectedResponse);
 
         // Act and Assert
         mockMvc.perform(MockMvcRequestBuilders.post("/api/buyer")
@@ -166,7 +166,7 @@ class BuyerControllerTest {
         String email = "unknown@example.com";
         String expectedResponse = "Buyer not found with email: " + email;
 
-        when(buyerService.getBuyerByEmail(email)).thenThrow(new BuyerNotFoundException("Buyer not found with email: " + email));
+        when(buyerService.getBuyerByEmail(email)).thenThrow(new NotFoundException("Buyer not found with email: " + email));
 
         // Act and Assert
         mockMvc.perform(MockMvcRequestBuilders.get("/api/buyer")

@@ -1,6 +1,7 @@
 package com.hcltech.car_commerce_api.exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
@@ -20,30 +21,18 @@ import java.util.stream.Collectors;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Handle BuyerNotFoundException
-    @ExceptionHandler(BuyerNotFoundException.class)
-    public ResponseEntity<Object> handleBuyerNotFoundException(BuyerNotFoundException ex, WebRequest request) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.NOT_FOUND.value());
-        body.put("error", "Not Found");
-        body.put("message", ex.getMessage());
-        body.put("path", request.getDescription(false)); // Shows the path of the error
-
-        return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(NotFoundException.class)
+    public ProblemDetail notFoundException(NotFoundException exception) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,String.format("Not Found %s",
+                        exception.getMessage()));
     }
 
-    // Handle BuyerEmailAlreadyExistsException
-    @ExceptionHandler(BuyerEmailAlreadyExistsException.class)
-    public ResponseEntity<Object> handleBuyerEmailAlreadyExistsException(BuyerEmailAlreadyExistsException ex, WebRequest request) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.CONFLICT.value());
-        body.put("error", "Conflict");
-        body.put("message", ex.getMessage());
-        body.put("path", request.getDescription(false));
-
-        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    @ExceptionHandler(AlreadyExistException.class)
+    public ProblemDetail alreadyExistException(NotFoundException exception) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,String.format("Already exist %s",
+                        exception.getMessage()));
     }
 
 //    handle invalid input errors
@@ -75,29 +64,18 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.FORBIDDEN.value()); // This should be 403
-        body.put("error", "Forbidden");
-        body.put("message", "Access Denied: You do not have the necessary permissions to access this resource.");
-        body.put("path", request.getDescription(false));
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    public ProblemDetail handleAccessDeniedException() {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.FORBIDDEN,"Access Denied: You do not have the " +
+                        "necessary permissions to access this resource.");
     }
 
-    // Handle all other exceptions globally
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleGlobalException(Exception ex, WebRequest request) {
-        ex.printStackTrace();
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        body.put("error", "Internal Server Error");
-        body.put("message", "An unexpected error occurred.");
-        body.put("path", request.getDescription(false));
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ProblemDetail handleGlobalException() {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR,"An unexpected error occurred.");
 
-        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
 

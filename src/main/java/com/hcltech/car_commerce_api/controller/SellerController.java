@@ -1,11 +1,9 @@
 package com.hcltech.car_commerce_api.controller;
 
-import com.hcltech.car_commerce_api.dto.BuyerDto;
+import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.dto.SellerDto;
-import com.hcltech.car_commerce_api.entity.Buyer;
-import com.hcltech.car_commerce_api.entity.Cars;
+import com.hcltech.car_commerce_api.entity.Car;
 import com.hcltech.car_commerce_api.entity.Seller;
-import com.hcltech.car_commerce_api.service.BuyerService;
 import com.hcltech.car_commerce_api.service.SellerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,43 +13,35 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/carCommerceApi/v1")
+@RequestMapping("/api/carCommerceApi/v1/seller")
 public class SellerController {
 
     private final SellerService sellerService;
-
 
     @Autowired
     public SellerController(SellerService sellerService){
         this.sellerService = sellerService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody SellerDto sellerDto){
-        return new ResponseEntity<>(sellerService.createUser(sellerDto), HttpStatus.OK);
-    }
 
     @GetMapping("/email")
     public ResponseEntity<Seller> getSellerByEmail(@RequestParam String email){
-        Seller seller = sellerService.getSellerByEmail(email);
-        return new ResponseEntity<>(seller, HttpStatus.OK);
+        return new ResponseEntity<>(sellerService.getSellerByEmail(email), HttpStatus.OK);
     }
 
     @PutMapping
-    public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody SellerDto sellerDto ) throws Exception {
-        String response = sellerService.udpateSeller(email,sellerDto);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+    public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody CarDto carDto) throws Exception {
+        return new ResponseEntity<>( sellerService.updateSeller(email,carDto), HttpStatus.OK);
     }
 
     @DeleteMapping
     public ResponseEntity<String> deleteSeller(@RequestParam String email){
-        String response = sellerService.deleteSeller(email);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<>(sellerService.deleteSeller(email), HttpStatus.OK);
 
     }
 
     @GetMapping("/cars")
-    public ResponseEntity<List<Cars>> getAllCars(){
+    public ResponseEntity<List<Car>> getAllCars(){
         return ResponseEntity.ok(sellerService.getAllCars());
     }
 }

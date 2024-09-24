@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/buyer")
+@RequestMapping("/api/carCommerceApi/v1/buyer")
 public class BuyerController {
 
     private final BuyerService buyerService;
@@ -19,10 +19,7 @@ public class BuyerController {
         this.buyerService = buyerService;
     }
 
-    @PostMapping
-    public ResponseEntity<?> createBuyer(@RequestBody BuyerDto buyerDTO){
-        return new ResponseEntity<>(buyerService.createBuyer(buyerDTO), HttpStatus.CREATED);
-    }
+
 
     @GetMapping
     public ResponseEntity<Buyer> getBuyerByEmail(@RequestParam String email){
