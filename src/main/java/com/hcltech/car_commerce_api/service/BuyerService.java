@@ -1,6 +1,8 @@
 package com.hcltech.car_commerce_api.service;
 
+import com.hcltech.car_commerce_api.dao.AuthorityDao;
 import com.hcltech.car_commerce_api.dao.BuyerDao;
+import com.hcltech.car_commerce_api.dao.MyUserDao;
 import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.exception.AlreadyExistException;
@@ -49,6 +51,7 @@ public class BuyerService {
             throw new NotFoundException("Buyer email: " + email);
         buyerDao.updateBuyer(email, buyerDTO);
         Map<String, String> responseJson = new HashMap<>();
+        responseJson.put("status", "success");
         responseJson.put("message", email+" buyer details updated successfully");
         return responseJson;
     }
@@ -60,6 +63,7 @@ public class BuyerService {
        }
 
         Map<String, String> responseJson = new HashMap<>();
+        responseJson.put("status", "success");
         responseJson.put("message", email+ " buyer deleted successfully");
         return responseJson;
     }
@@ -68,4 +72,41 @@ public class BuyerService {
         return modelMapper.map(buyerDTO, Buyer.class);
     }
 
+    public List<Cars> getAllCars() {
+        return carDao.getAllCars();
+    }
+
+    public Map<String, Object> purchaseCar(String email, int carId) {
+
+        Optional<Cars> car =  carDao.findById(carId);
+        Optional<Buyer> buyer = buyerDAO.getBuyerByEmail(email);
+
+        if(buyer.isEmpty()){
+            // buyer not found exception here
+        }
+
+        if(car.isEmpty()){
+            // car not found exception thrown here.
+        }
+
+
+        PurchasedCar purchasedCar = modelMapper.map(car.get(),PurchasedCar.class);
+        buyer.get().getPurchasedCarsList().add(purchasedCar);
+        buyerDAO.createBuyer(buyer.get());
+        purchasedCarDao.addPurchasedCar( purchasedCar);
+        carDao.deleteById(carId);
+
+        Map<String, Object> responseJson = new HashMap<>();
+        responseJson.put("status", "success");
+        responseJson.put("message", String.format("Car ID: %d with %s purchased successfully", carId, car.get().getCarName()));
+        responseJson.put("data", Map.of(
+                "carId", carId,
+                "carName", car.get().getCarName(),
+                "purchaseDate", LocalDateTime.now().toString(),
+                "paymentStatus", "Completed"
+        ));
+
+        return responseJson;
+
+    }
 }

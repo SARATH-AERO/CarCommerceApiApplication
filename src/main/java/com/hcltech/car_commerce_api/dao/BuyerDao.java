@@ -35,14 +35,18 @@ public class BuyerDao {
     public void updateBuyer(String email, BuyerDto updateBuyerDto) throws Exception {
         Optional<Buyer> existingBuyer = buyerRepository.findByEmail(email);
 
-        if(existingBuyer.isEmpty())
+        if (existingBuyer.isEmpty())
             throw new Exception(email + " buyer not present");
+
         Buyer modifiedBuyer = existingBuyer.get();
         modelMapper.map(updateBuyerDto, modifiedBuyer);
+
+        // Update the modified buyer
         buyerRepository.save(modifiedBuyer);
     }
 
     public int deleteBuyer(String email){
+
         return buyerRepository.deleteByEmail(email);
     }
 }
