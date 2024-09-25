@@ -3,6 +3,7 @@ package com.hcltech.car_commerce_api.dao;
 import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.entity.Car;
 import com.hcltech.car_commerce_api.entity.Seller;
+import com.hcltech.car_commerce_api.exception.NotFoundException;
 import com.hcltech.car_commerce_api.repository.CarRepository;
 import com.hcltech.car_commerce_api.repository.SellerRepository;
 import org.modelmapper.ModelMapper;
@@ -16,14 +17,9 @@ import java.util.Optional;
 public class SellerDao {
 
     private final SellerRepository sellerRepository;
-    private final CarRepository carRepository;
-    private final ModelMapper modelMapper;
 
-    public SellerDao(SellerRepository sellerRepository, ModelMapper modelMapper,
-                     CarRepository carRepository) {
+    public SellerDao(SellerRepository sellerRepository) {
         this.sellerRepository = sellerRepository;
-        this.modelMapper = modelMapper;
-        this.carRepository = carRepository;
     }
 
     public void createSeller(Seller seller){
@@ -33,22 +29,10 @@ public class SellerDao {
     public Optional<Seller> getSellerByEmail(String email) {
         return sellerRepository.findByEmail(email);
     }
-    @Transactional
-    public String updateSeller(String email, CarDto carDto) throws Exception {
-        Optional<Seller> existingSeller = sellerRepository.findByEmail(email);
-        if(existingSeller.isEmpty())
-            throw new Exception(email + " seller not present");
-        Seller seller = existingSeller.get();
-        seller.getCarList().add(modelMapper.map(carDto, Car.class));
-        sellerRepository.save(seller);
-        return email+" car details added successfully";
-    }
+
 
     public int deleteSeller(String email){
         return sellerRepository.deleteByEmail(email);
     }
 
-    public List<Car> getAllCars() {
-        return carRepository.findAll();
-    }
 }

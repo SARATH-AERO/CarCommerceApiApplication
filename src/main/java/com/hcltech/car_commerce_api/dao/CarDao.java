@@ -1,8 +1,9 @@
 package com.hcltech.car_commerce_api.dao;
 
+import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.entity.Car;
 import com.hcltech.car_commerce_api.repository.CarRepository;
-import org.springframework.stereotype.Repository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class CarDao {
         this.carRepository = carRepository;
     }
 
-    public List<Car> getAllCars(){
+    public List<Car> getAllCar(){
         return carRepository.findAll();
     }
 

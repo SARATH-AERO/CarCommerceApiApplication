@@ -14,7 +14,6 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class SellerDto {
     @NotNull(message = "Email cannot be null")
     @NotBlank(message = "Email cannot be empty")
@@ -39,5 +38,4 @@ public class SellerDto {
     @NotBlank(message = "License number cannot be empty")
     @Pattern(regexp = "^\\d{6}$", message = "Postal Code should be 6 digits and contain only numbers")
     private String postalCode;
-    private List<Car> carList;
 }

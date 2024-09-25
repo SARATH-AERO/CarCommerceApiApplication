@@ -9,13 +9,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ResponseBuyerDto {
+public class ResponseSellerDto {
+
     private String email;
     private String firstName;
     private String lastName;
     private String phoneNumber;
     private String address;
     private String postalCode;
-    private String licenseNumber;
-    private List<PurchasedCarDto> purchasedCarsList;
+    private List<CarDto> carList;
+
 }

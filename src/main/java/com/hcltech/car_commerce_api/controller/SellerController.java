@@ -1,6 +1,8 @@
 package com.hcltech.car_commerce_api.controller;
 
 import com.hcltech.car_commerce_api.dto.CarDto;
+import com.hcltech.car_commerce_api.dto.MessageDto;
+import com.hcltech.car_commerce_api.dto.ResponseSellerDto;
 import com.hcltech.car_commerce_api.dto.SellerDto;
 import com.hcltech.car_commerce_api.entity.Car;
 import com.hcltech.car_commerce_api.entity.Seller;
@@ -27,26 +29,21 @@ public class SellerController {
 
     @GetMapping("/email")
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<Seller> getSellerByEmail(@RequestParam String email){
+    public ResponseEntity<ResponseSellerDto> getSellerByEmail(@RequestParam String email){
         return new ResponseEntity<>(sellerService.getSellerByEmail(email), HttpStatus.OK);
     }
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<String> updateUser(@RequestParam String email,@Valid @RequestBody CarDto carDto) throws Exception {
+    public ResponseEntity<MessageDto> updateUser(@RequestParam String email,@Valid @RequestBody CarDto carDto) throws Exception {
         return new ResponseEntity<>( sellerService.updateSeller(email,carDto), HttpStatus.OK);
     }
 
     @DeleteMapping
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<String> deleteSeller(@RequestParam String email){
+    public ResponseEntity<MessageDto> deleteSeller(@RequestParam String email){
         return new ResponseEntity<>(sellerService.deleteSeller(email), HttpStatus.OK);
 
     }
 
-    @GetMapping("/cars")
-    @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<List<Car>> getAllCars(){
-        return ResponseEntity.ok(sellerService.getAllCars());
-    }
 }

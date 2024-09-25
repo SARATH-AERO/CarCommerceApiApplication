@@ -1,19 +1,21 @@
 package com.hcltech.car_commerce_api.dao;
 
 import com.hcltech.car_commerce_api.entity.MyUser;
-import com.hcltech.car_commerce_api.repository.UserRepository;
-import org.springframework.stereotype.Repository;
+import com.hcltech.car_commerce_api.repository.MyUserRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MyUserDao {
-    public MyUserDao(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    private final MyUserRepository myUserRepository;
+    public MyUserDao(MyUserRepository myUserRepository) {
+        this.myUserRepository = myUserRepository;
     }
-
-    private final UserRepository userRepository;
-
     public void saveUser(MyUser myUser) {
-        userRepository.save(myUser);
+        myUserRepository.save(myUser);
     }
+
+    public void deleteUser(String email){
+        myUserRepository.deleteByUsername(email);
+    }
+
 }

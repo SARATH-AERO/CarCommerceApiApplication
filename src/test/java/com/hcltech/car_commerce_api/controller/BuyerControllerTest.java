@@ -112,7 +112,7 @@ class BuyerControllerTest {
         responseJson.put("status", "success");
         responseJson.put("message", email+" buyer details updated successfully");
 
-        when(buyerService.updateBuyer(eq(email), any(BuyerDto.class))).thenReturn(responseJson);
+        //when(buyerService.updateBuyer(eq(email), any(BuyerDto.class))).thenReturn(responseJson);
 
         // Act and Assert
         mockMvc.perform(put("/api/buyer")
@@ -134,7 +134,7 @@ class BuyerControllerTest {
         responseJson.put("status", "success");
         responseJson.put("message", email+ " buyer deleted successfully");
 
-        when(buyerService.deleteBuyer(email)).thenReturn(responseJson);
+       // when(buyerService.deleteBuyer(email)).thenReturn(responseJson);
 
         // Act and Assert
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/buyer")

@@ -1,7 +1,7 @@
 package com.hcltech.car_commerce_api.security;
 
 import com.hcltech.car_commerce_api.entity.MyUser;
-import com.hcltech.car_commerce_api.repository.UserRepository;
+import com.hcltech.car_commerce_api.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -16,16 +16,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserRepository userRepository;
+    private final MyUserRepository myUserRepository;
 
     @Autowired
-    public UserDetailsServiceImpl(UserRepository userRepository){
-        this.userRepository = userRepository;
+    public UserDetailsServiceImpl(MyUserRepository myUserRepository){
+        this.myUserRepository = myUserRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        MyUser myUser = userRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException(username +" user not found"));
+        MyUser myUser = myUserRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException(username +" user not found"));
 
         Set<SimpleGrantedAuthority> authoritySet = myUser.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
