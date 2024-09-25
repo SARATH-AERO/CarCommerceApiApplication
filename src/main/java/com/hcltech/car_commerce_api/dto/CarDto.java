@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class CarDto
 {
     private int id;

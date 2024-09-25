@@ -1,6 +1,5 @@
 package com.hcltech.car_commerce_api.dto;
 
-import com.hcltech.car_commerce_api.entity.Car;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
