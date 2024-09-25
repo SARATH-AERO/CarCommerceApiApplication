@@ -35,6 +35,13 @@ public class BuyerController {
         return new ResponseEntity<>(buyerService.getAllCar(), HttpStatus.OK);
     }
 
+    @PutMapping
+    @PreAuthorize("hasRole('ROLE_BUYER')")
+    public ResponseEntity<MessageDto> updateUser(@RequestParam String email, @Valid @RequestBody UpdateBuyerDto updateBuyerDto ) throws Exception {
+        return ResponseEntity.ok(buyerService.updateBuyer(email,updateBuyerDto));
+    }
+
+
     @PutMapping("/carPurchase")
     @PreAuthorize("hasRole('ROLE_BUYER')")
     public ResponseEntity<MessageDto> purchaseCar(@RequestParam String email, @RequestParam Integer carId){

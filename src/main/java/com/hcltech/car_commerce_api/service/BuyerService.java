@@ -95,6 +95,17 @@ public class BuyerService {
         return MessageDto.builder().message(email+"has Purchased"+purchasedCar.getCarName()).build();
     }
 
+    public MessageDto updateBuyer(String email, UpdateBuyerDto updateBuyerDto){
+        Optional<Buyer> buyerOptional =  buyerDao.getBuyerByEmail(email);
+        if (buyerOptional.isEmpty())
+            throw new NotFoundException(email + " buyer not present");
+
+        Buyer buyer = buyerOptional.get();
+        modelMapper.map(updateBuyerDto, buyer);
+        buyerDao.createBuyer(buyer);
+        return MessageDto.builder().message(email+ "buyer details updated successfully").build();
+    }
+
     public ResponseBuyerDto toDto(Buyer buyer){
         return modelMapper.map(buyer, ResponseBuyerDto.class);
     }
