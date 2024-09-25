@@ -3,13 +3,11 @@ package com.hcltech.car_commerce_api.service;
 import com.hcltech.car_commerce_api.dao.CarDao;
 import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.entity.Car;
-import com.hcltech.car_commerce_api.entity.Seller;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CarService {

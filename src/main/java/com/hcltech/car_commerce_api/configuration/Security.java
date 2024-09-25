@@ -50,10 +50,7 @@ public class Security {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
                 )
-                .exceptionHandling(ex -> {
-                            ex.accessDeniedHandler(new CustomAccessDeniedHandler());
-                        }
-                );
+                .exceptionHandling(ex -> ex.accessDeniedHandler(new CustomAccessDeniedHandler()));
 
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

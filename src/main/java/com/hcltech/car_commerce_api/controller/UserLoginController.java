@@ -3,7 +3,6 @@ package com.hcltech.car_commerce_api.controller;
 import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.dto.LoginDto;
 import com.hcltech.car_commerce_api.dto.SellerDto;
-import com.hcltech.car_commerce_api.security.JwtUtil;
 import com.hcltech.car_commerce_api.security.UserDetailsServiceImpl;
 import com.hcltech.car_commerce_api.service.UserLoginService;
 import jakarta.validation.Valid;
@@ -13,12 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/authentication")
 public class UserLoginController {

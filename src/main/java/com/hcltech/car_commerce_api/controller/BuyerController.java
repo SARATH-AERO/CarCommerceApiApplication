@@ -37,7 +37,8 @@ public class BuyerController {
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<MessageDto> updateUser(@RequestParam String email, @Valid @RequestBody UpdateBuyerDto updateBuyerDto ) throws Exception {
+    public ResponseEntity<MessageDto> updateUser(@RequestParam String email, @Valid @RequestBody UpdateBuyerDto updateBuyerDto )
+    {
         return ResponseEntity.ok(buyerService.updateBuyer(email,updateBuyerDto));
     }
 

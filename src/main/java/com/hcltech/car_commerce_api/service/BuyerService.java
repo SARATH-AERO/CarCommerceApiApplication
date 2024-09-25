@@ -1,7 +1,6 @@
 package com.hcltech.car_commerce_api.service;
 
 import com.hcltech.car_commerce_api.dao.BuyerDao;
-import com.hcltech.car_commerce_api.dao.CarDao;
 import com.hcltech.car_commerce_api.dao.MyUserDao;
 import com.hcltech.car_commerce_api.dao.PurchasedCarDao;
 import com.hcltech.car_commerce_api.dto.*;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service

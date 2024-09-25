@@ -1,6 +1,5 @@
 package com.hcltech.car_commerce_api.service;
 
-import com.hcltech.car_commerce_api.dao.CarDao;
 import com.hcltech.car_commerce_api.dao.MyUserDao;
 import com.hcltech.car_commerce_api.dao.SellerDao;
 import com.hcltech.car_commerce_api.dto.CarDto;
@@ -15,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;;
+import java.util.*;
 
 @Service
 public class SellerService {

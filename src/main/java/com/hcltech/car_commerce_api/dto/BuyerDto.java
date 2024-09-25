@@ -3,7 +3,6 @@ package com.hcltech.car_commerce_api.dto;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
-import java.util.List;
 
 
 @Getter

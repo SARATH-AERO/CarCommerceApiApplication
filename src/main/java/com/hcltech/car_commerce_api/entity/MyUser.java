@@ -17,8 +17,7 @@ public class MyUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id; //  if you plan on integrating across multiple services or systems,
-    // using UUID ensures no collision in ID generation, even across different services or databases
+    private UUID id;
 
     @Column(unique = true, nullable = false)
     private String username;

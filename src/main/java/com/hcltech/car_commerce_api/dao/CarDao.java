@@ -1,9 +1,7 @@
 package com.hcltech.car_commerce_api.dao;
 
-import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.entity.Car;
 import com.hcltech.car_commerce_api.repository.CarRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

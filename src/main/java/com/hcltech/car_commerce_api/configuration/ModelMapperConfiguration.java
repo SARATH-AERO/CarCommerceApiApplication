@@ -6,22 +6,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ModelMapperConfiguration {
-
-//    @Bean
-//    public ModelMapper ModelMapperConfig(){
-//
-//        ModelMapper modelMapper = new ModelMapper();
-//        modelMapper.getConfiguration().setPropertyCondition(context -> context.getSource() != null);
-//        return modelMapper;
-//    }
-
+    
     @Bean
     public ModelMapper modelMapperConfig() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setPropertyCondition(context -> {
             Object sourceValue = context.getSource();
             if (sourceValue instanceof String) {
-                return sourceValue != null && !((String) sourceValue).isEmpty();
+                return !((String) sourceValue).isEmpty();
             }
             return sourceValue != null;
         });

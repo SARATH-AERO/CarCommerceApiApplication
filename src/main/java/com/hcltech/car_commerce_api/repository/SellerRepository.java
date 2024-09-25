@@ -1,6 +1,5 @@
 package com.hcltech.car_commerce_api.repository;
 
-import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.entity.Seller;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
