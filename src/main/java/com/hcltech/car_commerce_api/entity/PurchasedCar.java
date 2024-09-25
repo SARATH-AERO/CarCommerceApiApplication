@@ -28,7 +28,7 @@ public class PurchasedCar {
     private String model;
 
     @Column(length = 4,nullable = false)
-    private int manufacturerYear;
+    private Integer manufacturerYear;
 
     @NonNull
     private String colour;

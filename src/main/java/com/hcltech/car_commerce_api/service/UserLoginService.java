@@ -65,7 +65,7 @@ public class UserLoginService {
         authorityDao.saveAuthority(authority);
         myUserDao.saveUser(myUser);
 
-        return LoginDto.builder().message(emailId +"added successfully").jwtToken(
+        return LoginDto.builder().message(emailId +" added successfully").jwtToken(
                         generateJwt(setUserDetail(encodedPassword,emailId, setGrantedAuthority(myUser))))
                        .build();
     }

@@ -1,11 +1,9 @@
 package com.hcltech.car_commerce_api.controller;
 
 import com.hcltech.car_commerce_api.dto.BuyerDto;
+import com.hcltech.car_commerce_api.dto.PurchasedCarDto;
 import com.hcltech.car_commerce_api.dto.ResponseBuyerDto;
-import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.service.BuyerService;
-import com.hcltech.car_commerce_api.service.SellerService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +36,7 @@ public class BuyerController {
 
     @PutMapping("/carPurchase")
     @PreAuthorize("hasRole('ROLE_BUYER')")
-    public ResponseEntity<?> purchaseCar(@RequestParam String email, @RequestParam Integer carId){
+    public ResponseEntity<PurchasedCarDto> purchaseCar(@RequestParam String email, @RequestParam Integer carId){
         return new ResponseEntity<>(buyerService.purchaseCar(email, carId), HttpStatus.OK);
 
     }

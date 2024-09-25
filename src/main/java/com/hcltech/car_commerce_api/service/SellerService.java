@@ -34,7 +34,7 @@ public class SellerService {
     public void findSellerByEmail(String email) {
         Optional<Seller> seller = sellerDao.getSellerByEmail(email);
         if (seller.isPresent())
-            throw new AlreadyExistException(email + "email address");
+            throw new AlreadyExistException(email + " email address");
     }
 
     public String updateSeller(String email, CarDto carDto) throws Exception {

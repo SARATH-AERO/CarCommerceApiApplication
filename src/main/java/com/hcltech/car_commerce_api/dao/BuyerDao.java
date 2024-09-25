@@ -2,7 +2,7 @@ package com.hcltech.car_commerce_api.dao;
 
 import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.entity.Buyer;
-import com.hcltech.car_commerce_api.repo.AuthorityRepository;
+import com.hcltech.car_commerce_api.repository.AuthorityRepository;
 import com.hcltech.car_commerce_api.repository.BuyerRepository;
 import com.hcltech.car_commerce_api.repository.UserRepository;
 import org.modelmapper.ModelMapper;

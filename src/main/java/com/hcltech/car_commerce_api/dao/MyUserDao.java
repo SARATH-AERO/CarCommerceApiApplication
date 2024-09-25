@@ -3,8 +3,9 @@ package com.hcltech.car_commerce_api.dao;
 import com.hcltech.car_commerce_api.entity.MyUser;
 import com.hcltech.car_commerce_api.repository.UserRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
-@Repository
+@Service
 public class MyUserDao {
     public MyUserDao(UserRepository userRepository) {
         this.userRepository = userRepository;

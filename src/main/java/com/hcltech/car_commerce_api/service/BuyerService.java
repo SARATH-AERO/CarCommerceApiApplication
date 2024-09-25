@@ -4,6 +4,7 @@ import com.hcltech.car_commerce_api.dao.BuyerDao;
 import com.hcltech.car_commerce_api.dao.CarDao;
 import com.hcltech.car_commerce_api.dao.PurchasedCarDao;
 import com.hcltech.car_commerce_api.dto.BuyerDto;
+import com.hcltech.car_commerce_api.dto.PurchasedCarDto;
 import com.hcltech.car_commerce_api.dto.ResponseBuyerDto;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.entity.Car;
@@ -37,7 +38,7 @@ public class BuyerService {
     public void findBuyerByEmail(String email) {
         Optional<Buyer> buyer = buyerDao.getBuyerByEmail(email);
         if (buyer.isPresent())
-            throw new AlreadyExistException(email +"email address");
+            throw new AlreadyExistException(email +" email address");
     }
 
     public void createBuyer(BuyerDto buyerDto){
@@ -85,36 +86,22 @@ public class BuyerService {
         return carDao.getAllCars();
     }
 
-    public Map<String, Object> purchaseCar(String email, Integer carId) {
+    public PurchasedCarDto purchaseCar(String email, Integer carId) {
 
         Optional<Car> car =  carDao.findById(carId);
         Optional<Buyer> buyer = buyerDao.getBuyerByEmail(email);
 
         if(buyer.isEmpty()){
-            // buyer not found exception here
+          throw new NotFoundException("email" +email);
         }
-
         if(car.isEmpty()){
-            // car not found exception thrown here.
+            throw new NotFoundException("CarId" +carId);
         }
-
-
         PurchasedCar purchasedCar = modelMapper.map(car.get(),PurchasedCar.class);
         buyer.get().getPurchasedCarsList().add(purchasedCar);
         buyerDao.createBuyer(buyer.get());
         purchasedCarDao.addPurchasedCar(purchasedCar);
         carDao.deleteById(carId);
-
-        Map<String, Object> responseJson = new HashMap<>();
-        responseJson.put("status", "success");
-        responseJson.put("message", String.format("Car ID: %d with %s purchased successfully", carId, car.get().getCarName()));
-        responseJson.put("data", Map.of(
-                "carId", carId,
-                "carName", car.get().getCarName(),
-                "purchaseDate", LocalDateTime.now().toString(),
-                "paymentStatus", "Completed"
-        ));
-
-        return responseJson;
+        return  modelMapper.map(purchasedCar,PurchasedCarDto.class);
     }
 }

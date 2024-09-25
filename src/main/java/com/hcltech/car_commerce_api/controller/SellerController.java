@@ -5,6 +5,7 @@ import com.hcltech.car_commerce_api.dto.SellerDto;
 import com.hcltech.car_commerce_api.entity.Car;
 import com.hcltech.car_commerce_api.entity.Seller;
 import com.hcltech.car_commerce_api.service.SellerService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,7 +33,7 @@ public class SellerController {
 
     @PutMapping
     @PreAuthorize("hasRole('ROLE_SELLER')")
-    public ResponseEntity<String> updateUser(@RequestParam String email,@RequestBody CarDto carDto) throws Exception {
+    public ResponseEntity<String> updateUser(@RequestParam String email,@Valid @RequestBody CarDto carDto) throws Exception {
         return new ResponseEntity<>( sellerService.updateSeller(email,carDto), HttpStatus.OK);
     }
 

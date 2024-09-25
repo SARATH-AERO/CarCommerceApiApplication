@@ -12,12 +12,12 @@ import lombok.*;
 public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     private String carName;
     private String brand;
     private String model;
     @Column(length = 4,nullable = false)
-    private int manufacturerYear;
+    private Integer manufacturerYear;
     private String colour;
     private double price;
     @Column(length = 17, nullable = false)

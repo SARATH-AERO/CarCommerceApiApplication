@@ -14,7 +14,7 @@ public class PurchasedCarDto {
     private String carName;
     private String brand;
     private String model;
-    private int manufacturerYear;
+    private Integer manufacturerYear;
     private String colour;
     private double price;
     private String engineNumber;

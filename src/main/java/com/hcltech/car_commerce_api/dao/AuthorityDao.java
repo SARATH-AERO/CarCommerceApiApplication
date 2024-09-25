@@ -1,7 +1,7 @@
 package com.hcltech.car_commerce_api.dao;
 
 import com.hcltech.car_commerce_api.entity.Authority;
-import com.hcltech.car_commerce_api.repo.AuthorityRepository;
+import com.hcltech.car_commerce_api.repository.AuthorityRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository

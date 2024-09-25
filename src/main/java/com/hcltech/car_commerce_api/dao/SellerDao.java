@@ -7,6 +7,7 @@ import com.hcltech.car_commerce_api.repository.CarRepository;
 import com.hcltech.car_commerce_api.repository.SellerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,14 +33,15 @@ public class SellerDao {
     public Optional<Seller> getSellerByEmail(String email) {
         return sellerRepository.findByEmail(email);
     }
-
+    @Transactional
     public String updateSeller(String email, CarDto carDto) throws Exception {
         Optional<Seller> existingSeller = sellerRepository.findByEmail(email);
         if(existingSeller.isEmpty())
             throw new Exception(email + " seller not present");
-        modelMapper.map(carDto, existingSeller.get());
-        sellerRepository.save(existingSeller.get());
-        return email+" buyer details added successfully";
+        Seller seller = existingSeller.get();
+        seller.getCarList().add(modelMapper.map(carDto, Car.class));
+        sellerRepository.save(seller);
+        return email+" car details added successfully";
     }
 
     public int deleteSeller(String email){
