@@ -2,10 +2,7 @@ package com.hcltech.car_commerce_api.service;
 
 import com.hcltech.car_commerce_api.dao.MyUserDao;
 import com.hcltech.car_commerce_api.dao.SellerDao;
-import com.hcltech.car_commerce_api.dto.CarDto;
-import com.hcltech.car_commerce_api.dto.MessageDto;
-import com.hcltech.car_commerce_api.dto.ResponseSellerDto;
-import com.hcltech.car_commerce_api.dto.SellerDto;
+import com.hcltech.car_commerce_api.dto.*;
 import com.hcltech.car_commerce_api.entity.Car;
 import com.hcltech.car_commerce_api.entity.Seller;
 import com.hcltech.car_commerce_api.exception.AlreadyExistException;
@@ -45,6 +42,7 @@ class SellerServiceTest {
     private ResponseSellerDto responseSellerDto;
     private Car car;
     private CarDto carDto;
+    public UpdateSellerDto updateSellerDto;
 
     @BeforeEach
     void setUp() {
@@ -69,6 +67,10 @@ class SellerServiceTest {
 
         carDto = new CarDto();
         carDto.setCarName("Tesla");
+
+        updateSellerDto   = new UpdateSellerDto();
+        updateSellerDto.setFirstName("sai");
+
     }
 
     @Test
@@ -105,21 +107,38 @@ class SellerServiceTest {
     }
 
     @Test
-    void testUpdateSeller_Success() {
+    void testUpdateSellerCar_Success() {
         when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.of(seller));
         when(carService.toCarEntity(carDto)).thenReturn(car);
 
-        MessageDto result = sellerService.updateSeller("john.doe@example.com", carDto);
+        MessageDto result = sellerService.updateSellerCar("john.doe@example.com", carDto);
 
         assertEquals("john.doe@example.com car details added successfully", result.getMessage());
         verify(sellerDao, times(1)).createSeller(any(Seller.class));
     }
 
     @Test
-    void testUpdateSeller_NotFound() {
+    void testUpdateSellerCar_NotFound() {
         when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> sellerService.updateSeller("notfound@example.com", carDto));
+        assertThrows(NotFoundException.class, () -> sellerService.updateSellerCar("notfound@example.com", carDto));
+    }
+
+
+    @Test
+    void testUpdateSeller_Success() {
+        when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.of(seller));
+        when(modelMapper.map(seller, UpdateSellerDto.class)).thenReturn(updateSellerDto);
+        MessageDto result = sellerService.updateSeller("john.doe@example.com", updateSellerDto);
+        assertEquals("john.doe@example.com seller details updated successfully", result.getMessage());
+        verify(sellerDao, times(1)).createSeller(any(Seller.class));
+    }
+
+    @Test
+    void testUpdateSeller_NotFound() {
+        when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.empty());
+        when(modelMapper.map(seller, UpdateSellerDto.class)).thenReturn(updateSellerDto);
+        assertThrows(NotFoundException.class, () -> sellerService.updateSellerCar("notfound@example.com", carDto));
     }
 
     @Test

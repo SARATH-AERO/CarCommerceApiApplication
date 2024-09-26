@@ -1,5 +1,6 @@
 package com.hcltech.car_commerce_api.configuration;
 
+import com.hcltech.car_commerce_api.common.CommonValue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +17,9 @@ public class Swagger {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("Authentication Service"))
-                .addSecurityItem(new SecurityRequirement().addList("SecurityScheme"))
-                .components(new Components().addSecuritySchemes("SecurityScheme",new SecurityScheme().name("SecurityScheme").type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
+                .addSecurityItem(new SecurityRequirement().addList(CommonValue.SECURITY_SCHEME))
+                .components(new Components().addSecuritySchemes(CommonValue.SECURITY_SCHEME,new SecurityScheme().
+                        name(CommonValue.SECURITY_SCHEME).type(SecurityScheme.Type.HTTP).
+                        scheme("bearer").bearerFormat("JWT")));
     }
 }

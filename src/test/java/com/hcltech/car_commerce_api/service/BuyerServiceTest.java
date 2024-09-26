@@ -143,7 +143,7 @@ class BuyerServiceTest {
 
         MessageDto result = buyerService.updateBuyer("john.doe@example.com", updateBuyerDto);
 
-        assertEquals("john.doe@example.combuyer details updated successfully", result.getMessage());
+        assertEquals("john.doe@example.com buyer details updated successfully", result.getMessage());
         assertEquals("John", buyer.getFirstName());
     }
 

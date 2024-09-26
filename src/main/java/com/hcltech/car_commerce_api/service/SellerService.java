@@ -6,6 +6,7 @@ import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.dto.MessageDto;
 import com.hcltech.car_commerce_api.dto.ResponseSellerDto;
 import com.hcltech.car_commerce_api.dto.SellerDto;
+import com.hcltech.car_commerce_api.dto.UpdateSellerDto;
 import com.hcltech.car_commerce_api.entity.*;
 import com.hcltech.car_commerce_api.exception.AlreadyExistException;
 import com.hcltech.car_commerce_api.exception.NotFoundException;
@@ -48,7 +49,7 @@ public class SellerService {
             throw new AlreadyExistException(email + " seller email address");
     }
     @Transactional
-    public MessageDto updateSeller(String email, CarDto carDto){
+    public MessageDto updateSellerCar(String email, CarDto carDto){
         Optional<Seller> existingSeller = sellerDao.getSellerByEmail(email);
         if(existingSeller.isEmpty())
             throw new NotFoundException(email + " seller not present");
@@ -76,6 +77,16 @@ public class SellerService {
     }
     public Seller toSellerEntity(SellerDto sellerDto){
         return modelMapper.map(sellerDto, Seller.class);
+    }
+
+    public MessageDto updateSeller(String email, UpdateSellerDto updateSellerDto) {
+        Optional<Seller> sellerOptional = sellerDao.getSellerByEmail(email);
+        if (sellerOptional.isEmpty())
+            throw new NotFoundException(email + " seller not present");
+        Seller seller = sellerOptional.get();
+        modelMapper.map(updateSellerDto, seller);
+        sellerDao.createSeller(seller);
+        return MessageDto.builder().message(email + " seller details updated successfully").build();
     }
 
 }

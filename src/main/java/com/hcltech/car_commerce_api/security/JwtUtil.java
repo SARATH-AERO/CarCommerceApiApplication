@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.crypto.SecretKey;
@@ -37,8 +36,7 @@ public class JwtUtil {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         List<String> roles = userDetails.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.toList());
+                .map(GrantedAuthority::getAuthority).toList();
         claims.put("roles", roles);
         return createToken(claims, userDetails.getUsername());
     }

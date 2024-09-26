@@ -3,6 +3,7 @@ package com.hcltech.car_commerce_api.controller;
 import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.dto.MessageDto;
 import com.hcltech.car_commerce_api.dto.ResponseSellerDto;
+import com.hcltech.car_commerce_api.dto.UpdateSellerDto;
 import com.hcltech.car_commerce_api.service.SellerService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class SellerController {
     @PutMapping
     @PreAuthorize("hasRole('ROLE_SELLER')")
     public ResponseEntity<MessageDto> updateUser(@RequestParam String email,@Valid @RequestBody CarDto carDto) {
-        return new ResponseEntity<>( sellerService.updateSeller(email,carDto), HttpStatus.OK);
+        return new ResponseEntity<>( sellerService.updateSellerCar(email,carDto), HttpStatus.OK);
     }
 
     @DeleteMapping
@@ -39,6 +40,12 @@ public class SellerController {
     public ResponseEntity<MessageDto> deleteSeller(@RequestParam String email){
         return new ResponseEntity<>(sellerService.deleteSeller(email), HttpStatus.OK);
 
+    }
+    @PutMapping("/update")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    public ResponseEntity<MessageDto> updateUser(@RequestParam String email, @Valid @RequestBody UpdateSellerDto updateSellerDto)
+    {
+        return ResponseEntity.ok(sellerService.updateSeller(email,updateSellerDto));
     }
 
 }
