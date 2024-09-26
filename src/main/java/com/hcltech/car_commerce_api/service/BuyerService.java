@@ -2,7 +2,6 @@ package com.hcltech.car_commerce_api.service;
 
 import com.hcltech.car_commerce_api.dao.BuyerDao;
 import com.hcltech.car_commerce_api.dao.MyUserDao;
-import com.hcltech.car_commerce_api.dao.PurchasedCarDao;
 import com.hcltech.car_commerce_api.dto.*;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.entity.Car;
@@ -22,7 +21,6 @@ public class BuyerService {
     private final ModelMapper modelMapper;
     private final CarService carService;
     private final BuyerDao buyerDao;
-    private final PurchasedCarDao purchasedCarDao;
     private final MyUserDao myUserDao;
 
 
@@ -30,12 +28,10 @@ public class BuyerService {
     public BuyerService(ModelMapper modelMapper,
                         BuyerDao buyerDao,
                         CarService carService,
-                        PurchasedCarDao purchasedCarDao ,
                         MyUserDao myUserDao){
         this.modelMapper = modelMapper;
         this.buyerDao = buyerDao;
         this.carService =carService;
-        this.purchasedCarDao =purchasedCarDao;
         this.myUserDao = myUserDao;
     }
     public void findBuyerByEmail(String email) {
@@ -58,10 +54,10 @@ public class BuyerService {
 
     public MessageDto deleteBuyer(String email) {
        int deletedCount =  buyerDao.deleteBuyer(email);
-        myUserDao.deleteUser(email);
        if(deletedCount == 0){
            throw new NotFoundException("Buyer email: " + email);
        }
+        myUserDao.deleteUser(email);
         return MessageDto.builder().message(email+ " buyer deleted successfully").build();
     }
 
@@ -87,7 +83,6 @@ public class BuyerService {
         PurchasedCar purchasedCar = modelMapper.map(car.get(),PurchasedCar.class);
         buyer.get().getPurchasedCarsList().add(purchasedCar);
         buyerDao.createBuyer(buyer.get());
-        purchasedCarDao.addPurchasedCar(purchasedCar);
         carService.deleteById(carId);
 
         return MessageDto.builder().message(email+"has Purchased"+purchasedCar.getCarName()).build();

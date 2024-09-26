@@ -39,7 +39,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
                 if (jwtUtil.validateToken(jwtToken, username)) {
-                    // Extract roles and create authorities
                     Collection<? extends GrantedAuthority> authorities = jwtUtil.extractRolesFromToken(jwtToken).stream()
                             .map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());

@@ -10,6 +10,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import java.net.URI;
 
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
@@ -19,9 +20,10 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException accessDeniedException) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpStatus.FORBIDDEN.value());
-
-        response.getWriter().write(new ObjectMapper().writeValueAsString(ProblemDetail.forStatusAndDetail
-                  (HttpStatus.FORBIDDEN,accessDeniedException.getMessage())));
+        ProblemDetail problemDetail
+                = ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, accessDeniedException.getMessage());
+        problemDetail.setInstance(URI.create(request.getRequestURI()));
+        response.getWriter().write(new ObjectMapper().writeValueAsString(problemDetail));
     }
 
 }

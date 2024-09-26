@@ -9,6 +9,7 @@ import com.hcltech.car_commerce_api.dto.LoginDto;
 import com.hcltech.car_commerce_api.dto.SellerDto;
 import com.hcltech.car_commerce_api.entity.Authority;
 import com.hcltech.car_commerce_api.entity.MyUser;
+import com.hcltech.car_commerce_api.exception.AlreadyExistException;
 import com.hcltech.car_commerce_api.security.JwtUtil;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -43,13 +44,20 @@ public class UserLoginService {
 
 
     public LoginDto createBuyer(BuyerDto buyerDto,String role){
+        findUserEmail(buyerDto.getEmail());
         buyerService.findBuyerByEmail(buyerDto.getEmail());
         buyerService .createBuyer(buyerDto);
         return setAuthority (role,buyerDto.getPassword(), buyerDto.getEmail());
     }
 
+    private void findUserEmail(String email){
+        Optional<MyUser> byUsername = myUserDao.findByUsername(email);
+        if (byUsername.isPresent())
+            throw new AlreadyExistException(email + " user email address");
+    }
 
     public LoginDto createSeller(SellerDto sellerDto,String role){
+        findUserEmail(sellerDto.getEmail());
         sellerService.findSellerByEmail(sellerDto.getEmail());
         sellerService .createSeller(sellerDto);
         return setAuthority (role,sellerDto.getPassword(), sellerDto.getEmail());

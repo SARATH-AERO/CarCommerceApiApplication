@@ -35,7 +35,7 @@ public class Seller {
     private Date modifiedDate;
     @PrePersist
     protected void onCreate() {
-        modifiedDate = new Date(); // Set modifiedDate when the entity is created
+        modifiedDate = new Date();
     }
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")

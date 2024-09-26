@@ -22,7 +22,7 @@ http://localhost:8080/h2-console/login.do?jsessionid=90ed9afdab18b06e7f81f19eb6a
   "lastName": "sekar",
   "phoneNumber": "7583884443",
   "address": "sholing nallor",
-  "postalCode": "600119",
+  "postalCode": "600119"
 }
 
 -- car

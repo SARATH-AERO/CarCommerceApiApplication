@@ -1,5 +1,6 @@
 package com.hcltech.car_commerce_api.security;
 
+import com.hcltech.car_commerce_api.dao.MyUserDao;
 import com.hcltech.car_commerce_api.entity.MyUser;
 import com.hcltech.car_commerce_api.repository.MyUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +17,16 @@ import java.util.stream.Collectors;
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final MyUserRepository myUserRepository;
+    private final MyUserDao myUserDao;
 
     @Autowired
-    public UserDetailsServiceImpl(MyUserRepository myUserRepository){
-        this.myUserRepository = myUserRepository;
+    public UserDetailsServiceImpl(MyUserDao myUserDao){
+        this.myUserDao = myUserDao;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
-        MyUser myUser = myUserRepository.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException(username +" user not found"));
+        MyUser myUser = myUserDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException(username +" user not found"));
 
         Set<SimpleGrantedAuthority> authoritySet = myUser.getAuthorities().stream()
                 .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))

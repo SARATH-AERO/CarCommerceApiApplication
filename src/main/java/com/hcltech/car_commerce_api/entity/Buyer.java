@@ -40,7 +40,6 @@ public class Buyer {
     @Column(length = 15,nullable = false)
     private String licenseNumber;
 
-    @JoinColumn(updatable = false)
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;

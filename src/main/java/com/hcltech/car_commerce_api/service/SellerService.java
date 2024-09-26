@@ -60,10 +60,10 @@ public class SellerService {
 
     public MessageDto deleteSeller(String email) {
         int deletedCount =  sellerDao.deleteSeller(email);
-        myUserDao.deleteUser(email);
         if(deletedCount == 0){
             throw new NotFoundException("Seller email: " + email);
         }
+        myUserDao.deleteUser(email);
         return  MessageDto.builder().message(email+ " seller deleted successfully").build();
     }
 
