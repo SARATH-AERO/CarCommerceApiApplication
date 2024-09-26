@@ -33,7 +33,7 @@ public class Security {
 
 
     private static final String[] AUTHENTICATION_WHITE_LISTED = {
-            "/api/authentication/**", "/h2-console/**",
+            "/api/authentication/v1/userLogin/**", "/h2-console/**",
             "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**",
              };
 
