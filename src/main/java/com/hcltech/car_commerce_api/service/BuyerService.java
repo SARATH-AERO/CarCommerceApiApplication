@@ -75,7 +75,7 @@ public class BuyerService {
         Optional<Buyer> buyer = buyerDao.getBuyerByEmail(email);
 
         if(buyer.isEmpty()){
-          throw new NotFoundException("email" +email);
+          throw new NotFoundException("email " +email);
         }
         if(car.isEmpty()){
             throw new NotFoundException("CarId " +carId);
@@ -85,7 +85,7 @@ public class BuyerService {
         buyerDao.createBuyer(buyer.get());
         carService.deleteById(carId);
 
-        return MessageDto.builder().message(email+"has Purchased"+purchasedCar.getCarName()).build();
+        return MessageDto.builder().message(email+" has Purchased "+purchasedCar.getCarName()).build();
     }
 
     public MessageDto updateBuyer(String email, UpdateBuyerDto updateBuyerDto){
@@ -96,7 +96,7 @@ public class BuyerService {
         Buyer buyer = buyerOptional.get();
         modelMapper.map(updateBuyerDto, buyer);
         buyerDao.createBuyer(buyer);
-        return MessageDto.builder().message(email+ "buyer details updated successfully").build();
+        return MessageDto.builder().message(email+ " buyer details updated successfully").build();
     }
 
     public ResponseBuyerDto toDto(Buyer buyer){
