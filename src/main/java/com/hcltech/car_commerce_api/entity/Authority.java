@@ -15,6 +15,6 @@ public class Authority {
     private long id;
 
     @NonNull
-    private String authority;
+    private String authorityRole;
 
 }

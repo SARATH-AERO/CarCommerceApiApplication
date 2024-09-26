@@ -83,8 +83,8 @@ public class JwtUtil {
         if (rolesObject instanceof List<?> rolesList) {
             List<String> roles = new ArrayList<>();
             for (Object role : rolesList) {
-                if (role instanceof String) {
-                    roles.add((String) role);
+                if (role instanceof String s) {
+                    roles.add(s);
                 }
             }
             return roles;

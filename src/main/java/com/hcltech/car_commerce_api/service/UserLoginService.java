@@ -64,7 +64,7 @@ public class UserLoginService {
     }
     private LoginDto setAuthority(String role,String password ,String emailId){
         Authority authority = new Authority();
-        authority.setAuthority(role);
+        authority.setAuthorityRole(role);
         Set<Authority> authoritiesSet = new HashSet<>();
         authoritiesSet.add(authority);
 
@@ -98,7 +98,7 @@ public class UserLoginService {
 
     private Set<SimpleGrantedAuthority> setGrantedAuthority(MyUser user){
         return user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityRole()))
                 .collect(Collectors.toSet());
     }
 

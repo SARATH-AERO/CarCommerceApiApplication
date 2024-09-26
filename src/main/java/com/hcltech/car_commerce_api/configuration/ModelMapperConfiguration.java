@@ -12,8 +12,8 @@ public class ModelMapperConfiguration {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setPropertyCondition(context -> {
             Object sourceValue = context.getSource();
-            if (sourceValue instanceof String) {
-                return !((String) sourceValue).isEmpty();
+            if (sourceValue instanceof String s) {
+                return !s.isEmpty();
             }
             return sourceValue != null;
         });

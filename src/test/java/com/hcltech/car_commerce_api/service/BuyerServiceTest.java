@@ -44,6 +44,7 @@ class BuyerServiceTest {
     private ResponseBuyerDto responseBuyerDto;
     private Car car;
     private PurchasedCar purchasedCar;
+    private UpdateBuyerDto updateBuyerDto;
 
     @BeforeEach
     void setUp() {
@@ -69,6 +70,10 @@ class BuyerServiceTest {
         responseBuyerDto = new ResponseBuyerDto();
         responseBuyerDto.setFirstName("John");
         responseBuyerDto.setLastName("Doe");
+
+        updateBuyerDto = UpdateBuyerDto.builder().lastName("john").build();
+
+
     }
 
     @Test
@@ -133,16 +138,10 @@ class BuyerServiceTest {
     void testUpdateBuyer_Success() {
         when(buyerDao.getBuyerByEmail(anyString())).thenReturn(Optional.of(buyer));
         when(modelMapper.map(any(UpdateBuyerDto.class), eq(Buyer.class))).thenAnswer(invocation -> {
-            UpdateBuyerDto updateBuyerDto = invocation.getArgument(0);
             buyer.setFirstName(updateBuyerDto.getFirstName());
             return buyer;
         });
-
-        UpdateBuyerDto updateBuyerDto = new UpdateBuyerDto();
-        updateBuyerDto.setFirstName("John");
-
         MessageDto result = buyerService.updateBuyer("john.doe@example.com", updateBuyerDto);
-
         assertEquals("john.doe@example.com buyer details updated successfully", result.getMessage());
         assertEquals("John", buyer.getFirstName());
     }
@@ -150,6 +149,6 @@ class BuyerServiceTest {
     @Test
     void testUpdateBuyer_NotFound() {
         when(buyerDao.getBuyerByEmail(anyString())).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> buyerService.updateBuyer("nonexistent@example.com", new UpdateBuyerDto()));
+        assertThrows(NotFoundException.class, () -> buyerService.updateBuyer("nonexistent@example.com",updateBuyerDto));
     }
 }

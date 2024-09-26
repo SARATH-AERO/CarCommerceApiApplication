@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         MyUser myUser = myUserDao.findByUsername(username).orElseThrow(()-> new UsernameNotFoundException(username +" user not found"));
 
         Set<SimpleGrantedAuthority> authoritySet = myUser.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthority()))
+                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityRole()))
                 .collect(Collectors.toSet());
 
         return new User(
