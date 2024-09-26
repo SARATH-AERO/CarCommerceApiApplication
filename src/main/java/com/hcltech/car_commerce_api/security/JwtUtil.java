@@ -22,9 +22,8 @@ public class JwtUtil {
     @Value("${jwt.secret-key}")
     private String secretKeyString;
 
-    private SecretKey secretKey; // Declare SecretKey
+    private SecretKey secretKey;
 
-    // PostConstruct to initialize the SecretKey after properties are injected
     @PostConstruct
     private void init() {
         secretKey = new SecretKeySpec(secretKeyString.getBytes(), SignatureAlgorithm.HS256.getJcaName());
@@ -83,18 +82,16 @@ public class JwtUtil {
     public List<String> extractRolesFromToken(String token) {
         Claims claims = extractAllClaims(token);
         Object rolesObject = claims.get("roles");
-
-        // Use a pattern variable in the instanceof check
         if (rolesObject instanceof List<?> rolesList) {
             List<String> roles = new ArrayList<>();
             for (Object role : rolesList) {
                 if (role instanceof String) {
-                    roles.add((String) role); // Safe cast
+                    roles.add((String) role);
                 }
             }
             return roles;
         }
 
-        return Collections.emptyList(); // Return an empty list if roles are not found
+        return Collections.emptyList();
     }
 }

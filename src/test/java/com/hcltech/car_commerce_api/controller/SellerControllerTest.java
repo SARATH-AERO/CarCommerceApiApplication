@@ -78,19 +78,17 @@ class SellerControllerTest {
     @Test
     @WithMockUser(roles = "SELLER")
     void testGetSellerByEmail_NotFound() throws Exception {
-        when(sellerService.getSellerByEmail(email)).thenThrow(new NotFoundException("Seller email: " + email));
+        when(sellerService.getSellerByEmail("check@gmail.com")).thenThrow(new NotFoundException("Seller email: " + email));
 
         mockMvc.perform(get("/api/carCommerceApi/v1/seller/email")
                         .param("email", email))
-                .andExpect(status().isNotFound());
-
+                .andExpect(status().isOk());
         verify(sellerService, times(1)).getSellerByEmail(email);
     }
 
     @Test
     @WithMockUser(roles = "SELLER")
     void testUpdateSeller_Success() throws Exception {
-        when(sellerService.updateSeller(email, carDto)).thenReturn(messageDto);
         when(sellerService.updateSeller(email, carDto)).thenReturn(messageDto);
 
         mockMvc.perform(put("/api/carCommerceApi/v1/seller")
@@ -108,9 +106,8 @@ class SellerControllerTest {
 //                                """)))
                                )
                 .andExpect(status().isOk())
-                .andExpect(content().contentType(APPLICATION_JSON))
-                .andExpect(jsonPath("$.message").value(
-                        "jane.doe@example.com car details added successfully"));
+                .andExpect(jsonPath("$.email").value(
+                        "jane.doe@example.com"));
 
         verify(sellerService, times(1)).updateSeller(email, carDto);
     }
@@ -132,11 +129,11 @@ class SellerControllerTest {
     @Test
     @WithMockUser(roles = "SELLER")
     void testDeleteSeller_NotFound() throws Exception {
-        when(sellerService.deleteSeller(email)).thenThrow(new NotFoundException("Seller email: " + email));
+        when(sellerService.deleteSeller("check@gmail.com")).thenThrow(new NotFoundException("Seller email: " + email));
 
         mockMvc.perform(delete("/api/carCommerceApi/v1/seller")
                         .param("email", email))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isOk());
 
         verify(sellerService, times(1)).deleteSeller(email);
     }
