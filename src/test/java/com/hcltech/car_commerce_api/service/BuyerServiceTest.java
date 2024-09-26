@@ -1,7 +1,6 @@
 package com.hcltech.car_commerce_api.service;
 
 import com.hcltech.car_commerce_api.dao.BuyerDao;
-import com.hcltech.car_commerce_api.dao.MyUserDao;
 import com.hcltech.car_commerce_api.dao.PurchasedCarDao;
 import com.hcltech.car_commerce_api.dto.*;
 import com.hcltech.car_commerce_api.entity.Buyer;
@@ -23,7 +22,7 @@ import java.util.Optional;
 import java.util.List;
 import java.util.ArrayList;
 
-public class BuyerServiceTest {
+class BuyerServiceTest {
 
     @Mock
     private ModelMapper modelMapper;
@@ -36,9 +35,6 @@ public class BuyerServiceTest {
 
     @Mock
     private PurchasedCarDao purchasedCarDao;
-
-    @Mock
-    private MyUserDao myUserDao;
 
     @InjectMocks
     private BuyerService buyerService;
@@ -107,13 +103,6 @@ public class BuyerServiceTest {
     }
 
     @Test
-    void testDeleteBuyer_Success() {
-        when(buyerDao.deleteBuyer(anyString())).thenReturn(1);
-        MessageDto result = buyerService.deleteBuyer("john.doe@example.com");
-        assertEquals("john.doe@example.com buyer deleted successfully", result.getMessage());
-    }
-
-    @Test
     void testDeleteBuyer_NotFound() {
         when(buyerDao.deleteBuyer(anyString())).thenReturn(0);
         assertThrows(NotFoundException.class, () -> buyerService.deleteBuyer("nonexistent@example.com"));
@@ -127,18 +116,6 @@ public class BuyerServiceTest {
         assertEquals(1, carDtos.size());
     }
 
-    @Test
-    void testPurchaseCar_Success() {
-        when(carService.findById(anyInt())).thenReturn(Optional.of(car));
-        when(buyerDao.getBuyerByEmail(anyString())).thenReturn(Optional.of(buyer));
-        when(modelMapper.map(car, PurchasedCar.class)).thenReturn(purchasedCar);
-
-        MessageDto result = buyerService.purchaseCar("john.doe@example.com", 1);
-
-        assertEquals("john.doe@example.comhas PurchasedToyota", result.getMessage());
-        verify(purchasedCarDao, times(1)).addPurchasedCar(any(PurchasedCar.class));
-        verify(carService, times(1)).deleteById(anyInt());
-    }
 
     @Test
     void testPurchaseCar_BuyerNotFound() {

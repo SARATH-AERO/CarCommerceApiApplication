@@ -5,8 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.http.MediaType.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.dto.MessageDto;
 import com.hcltech.car_commerce_api.dto.ResponseSellerDto;
 import com.hcltech.car_commerce_api.exception.NotFoundException;
@@ -31,7 +29,6 @@ class SellerControllerTest {
     private MessageDto messageDto;
     private String email;
 
-    private CarDto carDto;
 
     @BeforeEach
     void setUp() {
@@ -47,15 +44,6 @@ class SellerControllerTest {
         responseSellerDto.setAddress("Chennai");
         responseSellerDto.setPhoneNumber("1234567890");
         responseSellerDto.setPostalCode("600094");
-
-        carDto = CarDto.builder().carName("tourism")
-                .model("64")
-                .brand("BMW")
-                .manufacturerYear(2000)
-                .colour("blue")
-                .price(50000)
-                .engineNumber("12345678901234567")
-                .build();
 
         messageDto = MessageDto.builder().message("Success").build();
     }

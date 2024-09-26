@@ -5,20 +5,16 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hcltech.car_commerce_api.controller.BuyerController;
 import com.hcltech.car_commerce_api.dto.CarDto;
 import com.hcltech.car_commerce_api.dto.MessageDto;
 import com.hcltech.car_commerce_api.dto.ResponseBuyerDto;
 import com.hcltech.car_commerce_api.dto.UpdateBuyerDto;
-import com.hcltech.car_commerce_api.exception.NotFoundException;
 import com.hcltech.car_commerce_api.service.BuyerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
