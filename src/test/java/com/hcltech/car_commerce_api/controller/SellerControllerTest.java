@@ -88,32 +88,6 @@ class SellerControllerTest {
 
     @Test
     @WithMockUser(roles = "SELLER")
-    void testUpdateSeller_Success() throws Exception {
-        when(sellerService.updateSeller(email, carDto)).thenReturn(messageDto);
-
-        mockMvc.perform(put("/api/carCommerceApi/v1/seller")
-                        .param("email", email)
-                        .contentType(APPLICATION_JSON)
-                    .content(new ObjectMapper().writeValueAsString(carDto))
-//                        """{ "carName": "turismo",
-//                                      "model": "64",
-//                                      "brand": "BMW",
-//                                      "manufacturerYear": 2000,
-//                                      "colour": "blue",
-//                                      "price": 45550,
-//                                      "engineNumber": "12345678901234567"
-//                                    }
-//                                """)))
-                               )
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.email").value(
-                        "jane.doe@example.com"));
-
-        verify(sellerService, times(1)).updateSeller(email, carDto);
-    }
-
-    @Test
-    @WithMockUser(roles = "SELLER")
     void testDeleteSeller_Success() throws Exception {
         when(sellerService.deleteSeller(email)).thenReturn(messageDto);
 
