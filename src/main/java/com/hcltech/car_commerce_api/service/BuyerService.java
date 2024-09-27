@@ -61,6 +61,7 @@ public class BuyerService {
         return MessageDto.builder().message(email+ " buyer deleted successfully").build();
     }
 
+
     public Buyer toBuyerEntity(BuyerDto buyerDTO){
         return modelMapper.map(buyerDTO, Buyer.class);
     }

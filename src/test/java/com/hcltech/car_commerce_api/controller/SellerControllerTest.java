@@ -13,12 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import java.util.Optional;
 
 class SellerControllerTest {
 
@@ -30,9 +27,6 @@ class SellerControllerTest {
     private ResponseSellerDto responseSellerDto;
     private MessageDto messageDto;
     private String email;
-    private CarDto carDto;
-    private UpdateSellerDto updateSellerDto;
-    private ModelMapper modelMapper;
 
 
     @BeforeEach

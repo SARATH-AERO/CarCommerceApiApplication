@@ -29,13 +29,8 @@ class AuthorityDaoTest {
 
     @Test
     void testSaveAuthority() {
-        // Arrange
         when(authorityRepository.save(any(Authority.class))).thenReturn(authority);
-
-        // Act
         authorityDao.saveAuthority(authority);
-
-        // Assert
         verify(authorityRepository, times(1)).save(authority);
     }
 }

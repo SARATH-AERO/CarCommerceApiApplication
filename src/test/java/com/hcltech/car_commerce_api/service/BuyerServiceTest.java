@@ -4,7 +4,6 @@ import com.hcltech.car_commerce_api.dao.BuyerDao;
 import com.hcltech.car_commerce_api.dto.*;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.entity.Car;
-import com.hcltech.car_commerce_api.entity.PurchasedCar;
 import com.hcltech.car_commerce_api.exception.AlreadyExistException;
 import com.hcltech.car_commerce_api.exception.NotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,7 +38,6 @@ class BuyerServiceTest {
     private BuyerDto buyerDto;
     private ResponseBuyerDto responseBuyerDto;
     private Car car;
-    private PurchasedCar purchasedCar;
     private UpdateBuyerDto updateBuyerDto;
 
     @BeforeEach
@@ -55,9 +53,6 @@ class BuyerServiceTest {
         car = new Car();
         car.setId(1);
         car.setCarName("Toyota");
-
-        purchasedCar = new PurchasedCar();
-        purchasedCar.setCarName("Toyota");
 
         buyerDto = new BuyerDto();
         buyerDto.setFirstName("John");
@@ -113,8 +108,8 @@ class BuyerServiceTest {
     void testGetAllCar_Success() {
         List<Car> cars = List.of(car);
         when(carService.getAllCar()).thenReturn(cars);
-        List<CarDto> carDtos = buyerService.getAllCar();
-        assertEquals(1, carDtos.size());
+        List<CarDto> carDto = buyerService.getAllCar();
+        assertEquals(1, carDto.size());
     }
 
 

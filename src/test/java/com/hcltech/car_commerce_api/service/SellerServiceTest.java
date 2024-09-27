@@ -36,7 +36,6 @@ class SellerServiceTest {
 
     @InjectMocks
     private SellerService sellerService;
-
     private Seller seller;
     private SellerDto sellerDto;
     private ResponseSellerDto responseSellerDto;
@@ -95,8 +94,8 @@ class SellerServiceTest {
     @Test
     void testFindSellerByEmail_AlreadyExists() {
         when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.of(seller));
-
-        assertThrows(AlreadyExistException.class, () -> sellerService.findSellerByEmail("john.doe@example.com"));
+         assertThrows(AlreadyExistException.class, () ->
+                sellerService.findSellerByEmail("jane.doe@example.com"));
     }
 
     @Test
@@ -120,7 +119,6 @@ class SellerServiceTest {
     @Test
     void testUpdateSellerCar_NotFound() {
         when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.empty());
-
         assertThrows(NotFoundException.class, () -> sellerService.updateSellerCar("notfound@example.com", carDto));
     }
 
@@ -137,16 +135,14 @@ class SellerServiceTest {
     @Test
     void testUpdateSeller_NotFound() {
         when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.empty());
-        when(modelMapper.map(seller, UpdateSellerDto.class)).thenReturn(updateSellerDto);
-        assertThrows(NotFoundException.class, () -> sellerService.updateSellerCar("notfound@example.com", carDto));
+        assertThrows(NotFoundException.class, () -> sellerService.
+                updateSeller("notfound@example.com",updateSellerDto));
     }
 
     @Test
     void testDeleteSeller_Success() {
         when(sellerDao.deleteSeller(anyString())).thenReturn(1);
-
         MessageDto result = sellerService.deleteSeller("jane.doe@example.com");
-
         assertEquals("jane.doe@example.com seller deleted successfully", result.getMessage());
         verify(myUserDao, times(1)).deleteUser(anyString());
     }

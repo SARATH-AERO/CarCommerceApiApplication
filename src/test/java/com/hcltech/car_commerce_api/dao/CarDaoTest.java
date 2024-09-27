@@ -16,7 +16,7 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class CarDaoTest {
+class CarDaoTest {
 
     @Mock
     private CarRepository carRepository;
@@ -30,7 +30,7 @@ public class CarDaoTest {
     }
 
     @Test
-    public void testGetAllCar() {
+     void testGetAllCar() {
         // Given
         Car car1 = new Car(1, "Toyota", "Corolla","SUV",1996,"Green",98899.50,"82jd92kjnnd9jnd9");
         Car car2 = new Car(2, "Honda", "Civic","SUV",1986,"blue",23899.50,"97shcidjnnd9jnd9");
@@ -46,42 +46,27 @@ public class CarDaoTest {
     }
 
     @Test
-    public void testFindById() {
-        // Given
+    void testFindById() {
         int carId = 1;
         Car car = new Car(1, "Toyota", "Corolla","SUV",1996,"Green",98899.50,"82jd92kjnnd9jnd9");
-
-        // When
         when(carRepository.findById(carId)).thenReturn(Optional.of(car));
         Optional<Car> result = carDao.findById(carId);
-
-        // Then
         assertTrue(result.isPresent());
     }
 
     @Test
-    public void testFindById_NotFound() {
-        // Given
+     void testFindById_NotFound() {
         int carId = 1;
-
-        // When
         when(carRepository.findById(carId)).thenReturn(Optional.empty());
         Optional<Car> result = carDao.findById(carId);
-
-        // Then
         assertFalse(result.isPresent());
     }
 
     @Test
-    public void testDeleteById() {
-        // Given
+     void testDeleteById() {
         int carId = 1;
-
-        // When
         doNothing().when(carRepository).deleteById(carId);
         carDao.deleteById(carId);
-
-        // Then
         verify(carRepository, times(1)).deleteById(carId);
     }
 }

@@ -23,7 +23,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class UserLoginControllerTest {
+class UserLoginControllerTest {
 
     @Mock
     private AuthenticationManager authenticationManager;

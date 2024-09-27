@@ -28,13 +28,13 @@ public class Security {
 
     private final JwtFilter jwtFilter;
 
-    @Autowired
     @Qualifier("delegatedAuthenticationEntryPoint")
     AuthenticationEntryPoint authEntryPoint;
 
     @Autowired
-    public Security(JwtFilter jwtFilter) {
+    public Security(JwtFilter jwtFilter ,AuthenticationEntryPoint authEntryPoint) {
         this.jwtFilter = jwtFilter;
+        this.authEntryPoint =authEntryPoint;
     }
 
     private static final String[] AUTHENTICATION_WHITE_LISTED = {
