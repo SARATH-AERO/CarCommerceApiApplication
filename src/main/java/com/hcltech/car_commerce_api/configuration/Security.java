@@ -1,8 +1,8 @@
 package com.hcltech.car_commerce_api.configuration;
 
-import com.hcltech.car_commerce_api.security.CustomAccessDeniedHandler;
 import com.hcltech.car_commerce_api.security.JwtFilter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,8 +15,10 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 
 @Configuration
@@ -27,10 +29,13 @@ public class Security {
     private final JwtFilter jwtFilter;
 
     @Autowired
+    @Qualifier("delegatedAuthenticationEntryPoint")
+    AuthenticationEntryPoint authEntryPoint;
+
+    @Autowired
     public Security(JwtFilter jwtFilter) {
         this.jwtFilter = jwtFilter;
     }
-
 
     private static final String[] AUTHENTICATION_WHITE_LISTED = {
             "/api/authentication/v1/userLogin/**", "/h2-console/**",
@@ -50,10 +55,8 @@ public class Security {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
                 )
-                .exceptionHandling(ex -> ex.accessDeniedHandler(new CustomAccessDeniedHandler()));
-
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint));
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
         return httpSecurity.build();
     }
 

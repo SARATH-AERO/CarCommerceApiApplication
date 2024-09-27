@@ -36,10 +36,6 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED,ex.getMessage());
     }
 
-    @ExceptionHandler(JwtTokenException.class)
-    public ProblemDetail handleJwtTokenException(JwtTokenException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.FORBIDDEN, ex.getMessage());
-    }
 
 }
 
