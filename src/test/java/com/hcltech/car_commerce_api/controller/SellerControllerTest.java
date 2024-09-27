@@ -5,8 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.http.MediaType.*;
 
-import com.hcltech.car_commerce_api.dto.MessageDto;
-import com.hcltech.car_commerce_api.dto.ResponseSellerDto;
+import com.hcltech.car_commerce_api.dto.*;
 import com.hcltech.car_commerce_api.exception.NotFoundException;
 import com.hcltech.car_commerce_api.service.SellerService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,9 +13,12 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+import java.util.Optional;
 
 class SellerControllerTest {
 
@@ -28,6 +30,9 @@ class SellerControllerTest {
     private ResponseSellerDto responseSellerDto;
     private MessageDto messageDto;
     private String email;
+    private CarDto carDto;
+    private UpdateSellerDto updateSellerDto;
+    private ModelMapper modelMapper;
 
 
     @BeforeEach

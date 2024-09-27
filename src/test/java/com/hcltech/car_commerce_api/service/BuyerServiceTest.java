@@ -1,7 +1,6 @@
 package com.hcltech.car_commerce_api.service;
 
 import com.hcltech.car_commerce_api.dao.BuyerDao;
-import com.hcltech.car_commerce_api.dao.PurchasedCarDao;
 import com.hcltech.car_commerce_api.dto.*;
 import com.hcltech.car_commerce_api.entity.Buyer;
 import com.hcltech.car_commerce_api.entity.Car;
@@ -32,9 +31,6 @@ class BuyerServiceTest {
 
     @Mock
     private CarService carService;
-
-    @Mock
-    private PurchasedCarDao purchasedCarDao;
 
     @InjectMocks
     private BuyerService buyerService;

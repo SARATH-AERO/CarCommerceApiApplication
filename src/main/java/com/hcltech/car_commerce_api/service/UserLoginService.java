@@ -50,7 +50,7 @@ public class UserLoginService {
         return setAuthority (role,buyerDto.getPassword(), buyerDto.getEmail());
     }
 
-    private void findUserEmail(String email){
+    void findUserEmail(String email){
         Optional<MyUser> byUsername = myUserDao.findByUsername(email);
         if (byUsername.isPresent())
             throw new AlreadyExistException(email + " user email address");
@@ -62,7 +62,7 @@ public class UserLoginService {
         sellerService .createSeller(sellerDto);
         return setAuthority (role,sellerDto.getPassword(), sellerDto.getEmail());
     }
-    private LoginDto setAuthority(String role,String password ,String emailId){
+    LoginDto setAuthority(String role, String password, String emailId){
         Authority authority = new Authority();
         authority.setAuthorityRole(role);
         Set<Authority> authoritiesSet = new HashSet<>();
@@ -82,9 +82,9 @@ public class UserLoginService {
         return  jwtUtil.generateToken(userDetails);
     }
 
-    private UserDetails setUserDetail(String password,
-                                      String emailId,
-                                      Set<SimpleGrantedAuthority> authoritySet){
+    UserDetails setUserDetail(String password,
+                              String emailId,
+                              Set<SimpleGrantedAuthority> authoritySet){
         return new User(emailId,
                 password,
                 true,
@@ -102,7 +102,7 @@ public class UserLoginService {
                 .collect(Collectors.toSet());
     }
 
-    private MyUser setUser(String password ,String emailId,Set<Authority> authoritySet) {
+    MyUser setUser(String password, String emailId, Set<Authority> authoritySet) {
         return   MyUser.builder()
                 .username(emailId)
                 .password(password)
