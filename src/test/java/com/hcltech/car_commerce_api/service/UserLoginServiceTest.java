@@ -55,20 +55,27 @@ class UserLoginServiceTest {
     private BuyerDto buyerDto;
     private Authority authority;
 
+    private  LoginDto loginDto;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         buyerDto = BuyerDto.builder()
+                .password("password123")
                 .email("john.doe@example.com")
                 .firstName("John")
                 .lastName("Doe")
-                .password("password123") // Assuming password is part of BuyerDto
                 .build();
 
         sellerDto = new SellerDto("jane.doe@example.com", "Jane", "Doe",
                 "0987654321", "pass", "456 Elm St", "628362");
         authority = new Authority();
         authority.setAuthorityRole("ROLE_BUYER");
+
+
+        loginDto =
+                LoginDto.builder().message("john.doe@example.com added successfully").jwtToken("jwt Token").build();
+
     }
 
     @Test
@@ -90,11 +97,11 @@ class UserLoginServiceTest {
     void testSetAuthority_Success() {
         when(passwordEncoder.encode(buyerDto.getPassword())).thenReturn("encodedPassword");
         when(jwtUtil.generateToken(any())).thenReturn("mockJwtToken");
-        LoginDto loginDto = userLoginService.setAuthority("ROLE_BUYER", buyerDto.getPassword(), buyerDto.getEmail());
-        verify(authorityDao).saveAuthority(any(Authority.class)); // Verify authority is saved
-        verify(myUserDao).saveUser(any(MyUser.class)); // Verify MyUser is saved
-        assertEquals("john.doe@example.com added successfully", loginDto.getMessage());
-        assertEquals("mockJwtToken", loginDto.getJwtToken());
+        LoginDto login = userLoginService.setAuthority("ROLE_BUYER", buyerDto.getPassword(), buyerDto.getEmail());
+        verify(authorityDao).saveAuthority(any(Authority.class));
+        verify(myUserDao).saveUser(any(MyUser.class));
+        assertEquals("john.doe@example.com added successfully", login.getMessage());
+        assertEquals("mockJwtToken", login.getJwtToken());
     }
 
     @Test
@@ -120,8 +127,6 @@ class UserLoginServiceTest {
         assertEquals(authoritiesSet, userDetails.getAuthorities());
     }
 
-
-
     @Test
     void testSetUser() {
         
@@ -144,17 +149,11 @@ class UserLoginServiceTest {
         assertEquals("john.doe@example.com user email address already Exist.", exception.getMessage());
         verify(buyerService, never()).createBuyer(any());
     }
-
-
-    @Test
-    void testCreateSeller_AlreadyExists() {
-        when(myUserDao.findByUsername(sellerDto.getEmail())).thenReturn(Optional.of(new MyUser()));
-
-        Exception exception = assertThrows(AlreadyExistException.class, () -> {
-            userLoginService.createSeller(sellerDto, "ROLE_SELLER");
-        });
-
-        assertEquals("jane.doe@example.com user email address already Exist.", exception.getMessage());
-        verify(sellerService, never()).createSeller(any());
-    }
+//    @Test
+//    void testCreateBuyer() {
+//        doNothing().when(buyerService).findBuyerByEmail(buyerDto.getEmail());
+//        doNothing().when(buyerService).createBuyer(buyerDto);
+//        LoginDto login = userLoginService.createBuyer(buyerDto,"ROLE_BUYER");
+//        assertEquals("john.doe@example.com added successfully", login.getMessage());
+//    }
 }

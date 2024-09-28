@@ -60,9 +60,9 @@ public class UserLoginService {
         findUserEmail(sellerDto.getEmail());
         sellerService.findSellerByEmail(sellerDto.getEmail());
         sellerService .createSeller(sellerDto);
-        return setAuthority (role,sellerDto.getPassword(), sellerDto.getEmail());
+        return setAuthority(role,sellerDto.getPassword(), sellerDto.getEmail());
     }
-    LoginDto setAuthority(String role, String password, String emailId){
+    public LoginDto setAuthority(String role, String password, String emailId){
         Authority authority = new Authority();
         authority.setAuthorityRole(role);
         Set<Authority> authoritiesSet = new HashSet<>();
