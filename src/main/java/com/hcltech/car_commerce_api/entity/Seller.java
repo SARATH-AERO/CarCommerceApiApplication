@@ -16,7 +16,7 @@ public class Seller {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(unique = true,nullable = false)  // Exception
+    @Column(unique = true,nullable = false)
     private String email;
     @NonNull
     private String firstName;
@@ -33,15 +33,22 @@ public class Seller {
     @Basic(optional = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date modifiedDate;
+
+    @Basic(optional = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
     @PrePersist
     protected void onCreate() {
+        modifiedDate = new Date();
+        createdAt = new Date();
+    }
+    @PreUpdate
+    protected void onUpdate() {
         modifiedDate = new Date();
     }
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "seller_id")
     private List<Car> carList;
-
-
-
 
 }
