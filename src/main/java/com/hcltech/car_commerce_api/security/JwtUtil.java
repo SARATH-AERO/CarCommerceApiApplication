@@ -21,7 +21,7 @@ public class JwtUtil {
     @Value("${jwt.secret-key}")
     private String secretKeyString;
 
-    public SecretKey secretKey;
+    private SecretKey secretKey;
 
     @PostConstruct
     private void init() {
