@@ -21,7 +21,7 @@ public class JwtUtil {
     @Value("${jwt.secret-key}")
     private String secretKeyString;
 
-    private SecretKey secretKey;
+    public SecretKey secretKey;
 
     @PostConstruct
     private void init() {
@@ -41,7 +41,7 @@ public class JwtUtil {
         return createToken(claims, userDetails.getUsername());
     }
 
-    private String createToken(Map<String, Object> claims, String subject) {
+    public String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
@@ -55,7 +55,7 @@ public class JwtUtil {
         return extractClaim(token, Claims::getSubject);
     }
 
-    private Boolean isTokenExpired(String token) {
+    public Boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 
