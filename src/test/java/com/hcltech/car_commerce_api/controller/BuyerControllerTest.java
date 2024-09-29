@@ -1,26 +1,30 @@
 package com.hcltech.car_commerce_api.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
-import com.hcltech.car_commerce_api.dto.CarDto;
-import com.hcltech.car_commerce_api.dto.MessageDto;
-import com.hcltech.car_commerce_api.dto.ResponseBuyerDto;
-import com.hcltech.car_commerce_api.dto.UpdateBuyerDto;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hcltech.car_commerce_api.dto.*;
 import com.hcltech.car_commerce_api.service.BuyerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 class BuyerControllerTest {
 
@@ -37,6 +41,7 @@ class BuyerControllerTest {
     private String email;
     private Integer carId;
 
+    private static final ObjectMapper mapper = new ObjectMapper();
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
@@ -91,11 +96,6 @@ class BuyerControllerTest {
         verify(buyerService, times(1)).getAllCar();
     }
 
-
-
-
-
-
     @Test
     @WithMockUser(roles = "BUYER")
     void testPurchaseCar_Success() throws Exception {
@@ -126,10 +126,6 @@ class BuyerControllerTest {
 
         verify(buyerService, times(1)).deleteBuyer(email);
     }
-
-
-
-    // Additional test cases
     @Test
     @WithMockUser(roles = "BUYER")
     void testGetAllCars_EmptyList() throws Exception {
@@ -163,6 +159,23 @@ class BuyerControllerTest {
                 .andExpect(status().isBadRequest());
 
         verify(buyerService, never()).deleteBuyer(anyString());
+    }
+
+    @Test
+    @WithMockUser(roles =  "BUYER")
+    void testUpdateUser()  throws Exception{
+        when(buyerService.updateBuyer(eq(email),
+                any(UpdateBuyerDto.class))).thenReturn(messageDto);
+
+        mockMvc.perform(put("/api/carCommerceApi/v1/buyer")
+                        .param("email", email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updateBuyerDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Success"));
+
+        verify(buyerService, times(1)).updateBuyer(eq(email),
+                any(UpdateBuyerDto.class));
     }
 
 

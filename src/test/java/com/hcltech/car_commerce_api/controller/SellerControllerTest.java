@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.http.MediaType.*;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hcltech.car_commerce_api.dto.*;
 import com.hcltech.car_commerce_api.exception.NotFoundException;
 import com.hcltech.car_commerce_api.service.SellerService;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,6 +29,12 @@ class SellerControllerTest {
     private ResponseSellerDto responseSellerDto;
     private MessageDto messageDto;
     private String email;
+
+    private  CarDto carDto;
+
+    private UpdateSellerDto updateSellerDto;
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
 
     @BeforeEach
@@ -44,6 +52,10 @@ class SellerControllerTest {
         responseSellerDto.setPhoneNumber("1234567890");
         responseSellerDto.setPostalCode("600094");
 
+        updateSellerDto = UpdateSellerDto.builder()
+                .firstName("sai").build();
+
+        carDto = CarDto.builder().id(1).brand("AUDI").engineNumber("12345678901234567").build();
         messageDto = MessageDto.builder().message("Success").build();
     }
 
@@ -97,6 +109,43 @@ class SellerControllerTest {
                 .andExpect(status().isOk());
 
         verify(sellerService, times(1)).deleteSeller(email);
+    }
+    @Test
+    @WithMockUser(roles = "SELLER")
+    void testUpdateUser()  throws Exception{
+
+        when(sellerService.updateSeller(eq(email), any(UpdateSellerDto.class)))
+                .thenReturn(messageDto);
+
+        mockMvc.perform(put("/api/carCommerceApi/v1/seller/update")
+                        .param("email", email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updateSellerDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Success"));
+
+        verify(sellerService, times(1)).updateSeller(eq(email),
+                any(UpdateSellerDto.class));
+    }
+
+
+    @Test
+    @WithMockUser(roles =  "SELLER")
+    void testUpdateSellerCar()  throws Exception{
+
+        when(sellerService.updateSellerCar(eq(email),
+                any(CarDto.class))).thenReturn(messageDto);
+
+        mockMvc.perform(put("/api/carCommerceApi/v1/seller")
+                        .param("email",email)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(carDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message")
+                        .value("Success"));
+
+        verify(sellerService, times(1)).updateSellerCar(eq(email),
+                any(CarDto.class));
     }
 }
 

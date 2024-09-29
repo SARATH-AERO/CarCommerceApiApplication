@@ -38,8 +38,8 @@ public class SellerController {
     @Operation(
             summary="Add a car to a seller" ,
             description = "Associates a car with a seller using seller's email.")
-    public ResponseEntity<MessageDto> updateUser(@RequestParam String email,@Valid @RequestBody CarDto carDto) {
-        return new ResponseEntity<>( sellerService.updateSellerCar(email,carDto), HttpStatus.OK);
+    public ResponseEntity<MessageDto> updateSellerCar(@RequestParam String email,@RequestBody CarDto carDto) {
+        return new ResponseEntity<>(sellerService.updateSellerCar(email,carDto), HttpStatus.OK);
     }
 
     @DeleteMapping

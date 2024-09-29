@@ -99,6 +99,15 @@ class SellerServiceTest {
     }
 
     @Test
+    void testFindSellerByEmail() {
+        when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.empty());
+        assertDoesNotThrow(() -> sellerService.findSellerByEmail("john.doe@example.com"));
+
+        verify(sellerDao, times(1)).getSellerByEmail("john.doe@example.com");
+
+    }
+
+    @Test
     void testCreateSeller_Success() {
         when(modelMapper.map(sellerDto, Seller.class)).thenReturn(seller);
         sellerService.createSeller(sellerDto);
