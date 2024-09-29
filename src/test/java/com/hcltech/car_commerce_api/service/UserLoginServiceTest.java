@@ -4,7 +4,6 @@ import com.hcltech.car_commerce_api.dao.AuthorityDao;
 import com.hcltech.car_commerce_api.dao.MyUserDao;
 import com.hcltech.car_commerce_api.dto.BuyerDto;
 import com.hcltech.car_commerce_api.dto.LoginDto;
-import com.hcltech.car_commerce_api.dto.SellerDto;
 import com.hcltech.car_commerce_api.entity.Authority;
 import com.hcltech.car_commerce_api.entity.MyUser;
 import com.hcltech.car_commerce_api.exception.AlreadyExistException;
@@ -41,21 +40,16 @@ class UserLoginServiceTest {
     private AuthorityDao authorityDao;
 
     @Mock
-    private SellerService sellerService;
-
-    @Mock
     private BuyerService buyerService;
 
     @InjectMocks
     private UserLoginService userLoginService;
 
-    private SellerDto sellerDto;
 
 
     private BuyerDto buyerDto;
     private Authority authority;
 
-    private  LoginDto loginDto;
 
     @BeforeEach
     void setUp() {
@@ -67,15 +61,8 @@ class UserLoginServiceTest {
                 .lastName("Doe")
                 .build();
 
-        sellerDto = new SellerDto("jane.doe@example.com", "Jane", "Doe",
-                "0987654321", "pass", "456 Elm St", "628362");
         authority = new Authority();
         authority.setAuthorityRole("ROLE_BUYER");
-
-
-        loginDto =
-                LoginDto.builder().message("john.doe@example.com added successfully").jwtToken("jwt Token").build();
-
     }
 
     @Test
@@ -149,11 +136,4 @@ class UserLoginServiceTest {
         assertEquals("john.doe@example.com user email address already Exist.", exception.getMessage());
         verify(buyerService, never()).createBuyer(any());
     }
-//    @Test
-//    void testCreateBuyer() {
-//        doNothing().when(buyerService).findBuyerByEmail(buyerDto.getEmail());
-//        doNothing().when(buyerService).createBuyer(buyerDto);
-//        LoginDto login = userLoginService.createBuyer(buyerDto,"ROLE_BUYER");
-//        assertEquals("john.doe@example.com added successfully", login.getMessage());
-//    }
 }

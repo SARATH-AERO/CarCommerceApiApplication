@@ -2,17 +2,20 @@ package com.hcltech.car_commerce_api.entity;
 
 import com.hcltech.car_commerce_api.dao.SellerDao;
 import com.hcltech.car_commerce_api.repository.SellerRepository;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
-public class SellerTest {  
+class SellerTest {
     
     @Mock
     private SellerRepository sellerRepository;
@@ -29,7 +32,7 @@ public class SellerTest {
     }
 
     @Test
-    public void testOnCreate() {
+    void testOnCreate() {
         seller.onCreate();
         assertNotNull(seller.getCreatedAt(), "createdAt should not be null");
         assertNotNull(seller.getModifiedDate(), "updatedAt should not be null");
@@ -41,11 +44,11 @@ public class SellerTest {
     }
 
     @Test
-    public void testOnUpdate() throws InterruptedException {
+    void testOnUpdate() {
         seller.onCreate();
         when(sellerRepository.save(seller)).thenReturn(seller);
         sellerDao.createSeller(seller);
-        Thread.sleep(1000);
+        Awaitility.await().atMost(1000, TimeUnit.MICROSECONDS);
         seller.onUpdate();
         verify(sellerRepository, times(1)).save(seller);
 

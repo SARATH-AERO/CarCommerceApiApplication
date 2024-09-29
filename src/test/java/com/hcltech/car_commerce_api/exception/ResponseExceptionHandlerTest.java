@@ -13,7 +13,7 @@ import org.springframework.security.access.AccessDeniedException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class ResponseExceptionHandlerTest {
+class ResponseExceptionHandlerTest {
 
     @InjectMocks
     private ResponseExceptionHandler responseExceptionHandler;
