@@ -29,7 +29,7 @@ class BuyerTest{
     }
 
     @Test
-    public void testOnCreate() {
+    void testOnCreate() {
         buyer.onCreate();
         assertNotNull(buyer.getCreatedAt(), "createdAt should not be null");
         assertNotNull(buyer.getUpdatedAt(), "updatedAt should not be null");
@@ -44,7 +44,7 @@ class BuyerTest{
     }
 
     @Test
-    public void testOnUpdate() throws InterruptedException {
+    void testOnUpdate() throws InterruptedException {
         buyer.onCreate();
         when(buyerRepository.save(buyer)).thenReturn(buyer);
         buyerDao.createBuyer(buyer);

@@ -37,7 +37,7 @@ class MyUserTest {
 
 
     @Test
-    public void testOnCreate() {
+    void testOnCreate() {
         myUser.onCreate();
         assertNotNull(myUser.getCreatedAt(), "createdAt should not be null");
         assertNotNull(myUser.getUpdatedAt(), "updatedAt should not be null");
@@ -52,7 +52,7 @@ class MyUserTest {
     }
 
     @Test
-    public void testOnUpdate() throws InterruptedException {
+    void testOnUpdate() throws InterruptedException {
         myUser.onCreate();
         when(myUserRepository.save(myUser)).thenReturn(myUser);
         myUserDao.saveUser(myUser);

@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.times;
 
-public class SellerTest {  
+class SellerTest {
     
     @Mock
     private SellerRepository sellerRepository;
@@ -29,7 +29,7 @@ public class SellerTest {
     }
 
     @Test
-    public void testOnCreate() {
+    void testOnCreate() {
         seller.onCreate();
         assertNotNull(seller.getCreatedAt(), "createdAt should not be null");
         assertNotNull(seller.getModifiedDate(), "updatedAt should not be null");
@@ -41,7 +41,7 @@ public class SellerTest {
     }
 
     @Test
-    public void testOnUpdate() throws InterruptedException {
+    void testOnUpdate() throws InterruptedException {
         seller.onCreate();
         when(sellerRepository.save(seller)).thenReturn(seller);
         sellerDao.createSeller(seller);
