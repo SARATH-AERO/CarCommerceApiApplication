@@ -40,9 +40,6 @@ class UserLoginServiceTest {
     private AuthorityDao authorityDao;
 
     @Mock
-    private SellerService sellerService;
-
-    @Mock
     private BuyerService buyerService;
 
     @InjectMocks

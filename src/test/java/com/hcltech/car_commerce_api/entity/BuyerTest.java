@@ -9,7 +9,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
+import java.util.concurrent.TimeUnit;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -44,12 +46,12 @@ class BuyerTest{
     }
 
     @Test
-    void testOnUpdate() throws InterruptedException {
+    void testOnUpdate()  {
         buyer.onCreate();
         when(buyerRepository.save(buyer)).thenReturn(buyer);
         buyerDao.createBuyer(buyer);
         LocalDateTime initialUpdatedAt = buyer.getUpdatedAt();
-        Thread.sleep(1000);
+        await().atMost(1000, TimeUnit.MICROSECONDS);
         buyer.onUpdate();
         assertTrue(buyer.getUpdatedAt().isAfter(initialUpdatedAt), "updatedAt should be updated");
         verify(buyerRepository, times(1)).save(buyer);
