@@ -6,7 +6,7 @@ http://localhost:8080/h2-console/login.do?jsessionid=90ed9afdab18b06e7f81f19eb6a
 
 -- buyer
 {
-  "email": "sarath@gamil.com",
+  "email": "sarath@gmail.com",
   "password": "Sarath@123",
   "firstName": "sarath",
   "lastName": "sekar",
@@ -18,9 +18,9 @@ http://localhost:8080/h2-console/login.do?jsessionid=90ed9afdab18b06e7f81f19eb6a
 
  -- seller
 {
-  "email": "sarath@gamil",
+  "email": "magesh@gmail",
   "password": "Sarath@123",
-  "firstName": "sarath",
+  "firstName": "magesh",
   "lastName": "sekar",
   "phoneNumber": "7583884443",
   "address": "sholing nallor",
