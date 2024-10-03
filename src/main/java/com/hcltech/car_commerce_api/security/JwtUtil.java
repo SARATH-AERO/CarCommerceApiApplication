@@ -3,7 +3,6 @@ package com.hcltech.car_commerce_api.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -19,13 +18,12 @@ import javax.crypto.spec.SecretKeySpec;
 public class JwtUtil {
 
     @Value("${jwt.secret-key}")
-    private String secretKeyString;
+    public String secretKeyString;
 
-    private SecretKey secretKey;
 
-    @PostConstruct
-    private void init() {
-        secretKey = new SecretKeySpec(secretKeyString.getBytes(), SignatureAlgorithm.HS256.getJcaName());
+    public SecretKey getSignKey() {
+        return new SecretKeySpec(secretKeyString.getBytes(),
+                SignatureAlgorithm.HS256.getJcaName());
     }
 
     public boolean validateToken(String token, String username) {
@@ -47,7 +45,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10))
-                .signWith(secretKey) // Use the initialized SecretKey here
+                .signWith(getSignKey())
                 .compact();
     }
 
@@ -71,7 +69,7 @@ public class JwtUtil {
 
     private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
-                .setSigningKey(secretKey)
+                .setSigningKey(getSignKey())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

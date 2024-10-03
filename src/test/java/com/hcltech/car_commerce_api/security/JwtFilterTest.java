@@ -22,63 +22,55 @@ import static org.mockito.Mockito.*;
 class JwtFilterTest {
 
     @Mock
-    private JwtUtil jwtUtil; // Mocked JwtUtil
+    private JwtUtil jwtUtil;
 
     @InjectMocks
-    private JwtFilter jwtFilter; // JwtFilter will use the mocked JwtUtil
+    private JwtFilter jwtFilter;
 
     @BeforeEach
     void setUp() {
-        MockitoAnnotations.openMocks(this); // Initialize mocks
+        MockitoAnnotations.openMocks(this);
     }
 
 
 
     @Test
     void testDoFilterInternal_InvalidToken() throws ServletException, IOException {
-        // Arrange
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         FilterChain filterChain = mock(FilterChain.class);
         String token = "invalid.jwt.token";
 
-        // Setup the JwtUtil mock
+
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn("Bearer " + token);
         when(jwtUtil.extractUsername(token)).thenReturn("testUser");
         when(jwtUtil.validateToken(token, "testUser")).thenReturn(false);
 
-        // Act
         jwtFilter.doFilterInternal(request, response, filterChain);
 
-        // Assert
         assertNull(SecurityContextHolder.getContext().getAuthentication());
     }
 
     @Test
     void testDoFilterInternal_NoAuthorizationHeader() throws ServletException, IOException {
-        // Arrange
+
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
         FilterChain filterChain = mock(FilterChain.class);
 
-        // Setup the JwtUtil mock
         when(request.getHeader(HttpHeaders.AUTHORIZATION)).thenReturn(null);
 
-        // Act
         jwtFilter.doFilterInternal(request, response, filterChain);
 
-        // Assert
         assertNull(SecurityContextHolder.getContext().getAuthentication());
 
     }
 
     @Test
     void testDoFilterInternal_NullRequest() {
-        // Arrange
         HttpServletResponse response = mock(HttpServletResponse.class);
         FilterChain filterChain = mock(FilterChain.class);
 
-        // Act & Assert
         assertThrows(ServletException.class, () -> {
             jwtFilter.doFilterInternal(null, response, filterChain);
         });
@@ -86,11 +78,9 @@ class JwtFilterTest {
 
     @Test
     void testDoFilterInternal_NullResponse() {
-        // Arrange
         HttpServletRequest request = mock(HttpServletRequest.class);
         FilterChain filterChain = mock(FilterChain.class);
 
-        // Act & Assert
         assertThrows(ServletException.class, () -> {
             jwtFilter.doFilterInternal(request, null, filterChain);
         });
@@ -98,11 +88,9 @@ class JwtFilterTest {
 
     @Test
     void testDoFilterInternal_NullFilterChain() {
-        // Arrange
         HttpServletRequest request = mock(HttpServletRequest.class);
         HttpServletResponse response = mock(HttpServletResponse.class);
 
-        // Act & Assert
         assertThrows(ServletException.class, () -> {
             jwtFilter.doFilterInternal(request, response, null);
         });
