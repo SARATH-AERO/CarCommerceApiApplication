@@ -80,7 +80,7 @@ class BuyerControllerTest {
     @Test
     @WithMockUser(roles = "BUYER")
     void testGetAllCars_Success() throws Exception {
-        List<CarDto> carDtoList = Collections.emptyList(); // Adjust with actual data if needed
+        List<ResponseCarDto> carDtoList = Collections.emptyList(); // Adjust with actual data if needed
         when(buyerService.getAllCar()).thenReturn(carDtoList);
 
         mockMvc.perform(get("/api/carCommerceApi/v1/buyer/getAllCars"))
