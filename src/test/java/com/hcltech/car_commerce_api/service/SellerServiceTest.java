@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
+import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -115,20 +117,20 @@ class SellerServiceTest {
     }
 
     @Test
-    void testUpdateSellerCar_Success() {
+    void testAddSellerCar_Success() {
         when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.of(seller));
         when(carService.toCarEntity(carDto)).thenReturn(car);
 
-        MessageDto result = sellerService.updateSellerCar("john.doe@example.com", carDto);
+        MessageDto result = sellerService.addSellerCar("john.doe@example.com", carDto);
 
         assertEquals("john.doe@example.com car details added successfully", result.getMessage());
         verify(sellerDao, times(1)).createSeller(any(Seller.class));
     }
 
     @Test
-    void testUpdateSellerCar_NotFound() {
+    void testAddSellerCar_NotFound() {
         when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.empty());
-        assertThrows(NotFoundException.class, () -> sellerService.updateSellerCar("notfound@example.com", carDto));
+        assertThrows(NotFoundException.class, () -> sellerService.addSellerCar("notfound@example.com", carDto));
     }
 
 
@@ -161,5 +163,36 @@ class SellerServiceTest {
         when(sellerDao.deleteSeller(anyString())).thenReturn(0);
 
         assertThrows(NotFoundException.class, () -> sellerService.deleteSeller("notfound@example.com"));
+    }
+
+    @Test
+    void testUpdateCar_Success() {
+        when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.of(seller));
+        doNothing().when(sellerDao).createSeller(any(Seller.class)); // Mocking createSeller to do nothing
+
+        when(carService.findById(anyInt())).thenReturn(Optional.of(car));
+
+        MessageDto result = sellerService.updateCar("john.doe@example.com", 1, carDto);
+
+        assertEquals("john.doe@example.com seller car1 details updated successfully", result.getMessage());
+        verify(carService, times(1)).addCar(car);
+        verify(sellerDao, times(1)).createSeller(seller);
+    }
+
+
+
+    @Test
+    void testUpdateCar_SellerNotFound() {
+        when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> sellerService.updateCar("notfound@example.com", 1, carDto));
+    }
+
+    @Test
+    void testUpdateCar_CarNotFound() {
+        when(sellerDao.getSellerByEmail(anyString())).thenReturn(Optional.of(seller));
+        when(carService.findById(anyInt())).thenReturn(Optional.empty());
+
+        assertThrows(NotFoundException.class, () -> sellerService.updateCar("john.doe@example.com", 1, carDto));
     }
 }
