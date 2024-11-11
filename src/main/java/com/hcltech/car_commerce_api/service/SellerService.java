@@ -49,12 +49,15 @@ public class SellerService {
             throw new AlreadyExistException(email + " seller email address");
     }
     @Transactional
-    public MessageDto updateSellerCar(String email, CarDto carDto){
+    public MessageDto addSellerCar(String email, CarDto carDto)  {
+
         Optional<Seller> existingSeller = sellerDao.getSellerByEmail(email);
         if(existingSeller.isEmpty())
             throw new NotFoundException(email + " seller not present");
         Seller seller = existingSeller.get();
-        seller.getCarList().add(carService.toCarEntity(carDto));
+
+        Car car =  carService.toCarEntity(carDto);
+        seller.getCarList().add(car);
         sellerDao.createSeller(seller);
         return MessageDto.builder().message(email+" car details added successfully").build();
     }
@@ -87,6 +90,21 @@ public class SellerService {
         modelMapper.map(updateSellerDto, seller);
         sellerDao.createSeller(seller);
         return MessageDto.builder().message(email + " seller details updated successfully").build();
+    }
+    
+    public MessageDto updateCar(String email, int id, CarDto carDTO) {
+        Optional<Seller> seller = sellerDao.getSellerByEmail(email);
+        if (seller.isEmpty())
+            throw new NotFoundException(email + " seller not present");
+
+        Optional<Car> car = carService.findById(id);
+        if (car.isEmpty())
+            throw new NotFoundException(email + " car not present");
+        modelMapper.map(carDTO, car.get());
+        carService.addCar(car.get());
+        seller.get().getCarList().add(car.get());
+        sellerDao.createSeller(seller.get());
+        return MessageDto.builder().message(email + " seller car"+ id + " details updated successfully").build();
     }
 
 }
