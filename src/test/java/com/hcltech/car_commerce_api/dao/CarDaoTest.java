@@ -32,8 +32,28 @@ class CarDaoTest {
     @Test
      void testGetAllCar() {
         // Given
-        Car car1 = new Car(1, "Toyota", "Corolla","SUV",1996,"Green",98899.50,"82jd92kjnnd9jnd9");
-        Car car2 = new Car(2, "Honda", "Civic","SUV",1986,"blue",23899.50,"97shcidjnnd9jnd9");
+        Car car1 = Car.builder()
+                .id(1)
+                .carName("Toyota")
+                .brand("Corolla")
+                .model("SUV")
+                .manufacturerYear(1996)
+                .colour("Green")
+                .price(98899.50)
+                .engineNumber("82jd92kjnnd9jnd9")
+                .build();
+
+        Car car2 = Car.builder()
+                .id(2)
+                .carName("Honda")
+                .brand("Civic")
+                .model("SUV")
+                .manufacturerYear(1986)
+                .colour("Blue")
+                .price(23899.50)
+                .engineNumber("97shcidjnnd9jnd9")
+                .build();
+
         List<Car> cars = Arrays.asList(car1, car2);
 
         // When
@@ -48,7 +68,16 @@ class CarDaoTest {
     @Test
     void testFindById() {
         int carId = 1;
-        Car car = new Car(1, "Toyota", "Corolla","SUV",1996,"Green",98899.50,"82jd92kjnnd9jnd9");
+        Car car = Car.builder()
+                .id(1)
+                .carName("Toyota")
+                .brand("Corolla")
+                .model("SUV")
+                .manufacturerYear(1996)
+                .colour("Green")
+                .price(98899.50)
+                .engineNumber("82jd92kjnnd9jnd9")
+                .build();
         when(carRepository.findById(carId)).thenReturn(Optional.of(car));
         Optional<Car> result = carDao.findById(carId);
         assertTrue(result.isPresent());
