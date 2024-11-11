@@ -28,4 +28,8 @@ public class CarDao {
     public void deleteById(int carId){
         carRepository.deleteById(carId);
     }
+    
+    public void addCar(Car car) {
+        carRepository.save(car);
+    }
 }
