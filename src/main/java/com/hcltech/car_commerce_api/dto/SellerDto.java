@@ -35,4 +35,7 @@ public class SellerDto {
     @NotBlank(message = "License number cannot be empty")
     @Pattern(regexp = "^\\d{6}$", message = "Postal Code should be 6 digits and contain only numbers")
     private String postalCode;
+
+    private String gender;
+
 }

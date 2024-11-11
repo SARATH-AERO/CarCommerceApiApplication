@@ -17,5 +17,8 @@ public class ResponseBuyerDto {
     private String address;
     private String postalCode;
     private String licenseNumber;
+
+    private String gender;
+
     private List<PurchasedCarDto> purchasedCarsList;
 }

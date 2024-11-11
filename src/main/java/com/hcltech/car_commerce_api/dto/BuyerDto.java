@@ -47,4 +47,7 @@ public class BuyerDto {
     @NotBlank(message = "License number cannot be empty")
     @Size(min = 15, max = 15, message = "License number must be exactly 15 characters long")
     private String licenseNumber;
+
+    private String gender;
+
 }

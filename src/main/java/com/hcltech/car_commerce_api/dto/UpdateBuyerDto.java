@@ -24,4 +24,7 @@ public class UpdateBuyerDto {
 
     @Pattern(regexp = "^\\d{15}$|^$", message = "License number must be exactly 15 characters long, or can be empty")
     private String licenseNumber;
+
+    private String gender;
+
 }

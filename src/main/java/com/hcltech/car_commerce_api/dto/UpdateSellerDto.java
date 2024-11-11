@@ -21,4 +21,7 @@ public class UpdateSellerDto {
 
     @Pattern(regexp = "^\\d{6}$", message = "Postal Code should be 6 digits and contain only numbers")
     private String postalCode;
+
+    private String gender;
+
 }

@@ -17,6 +17,9 @@ public class ResponseSellerDto {
     private String phoneNumber;
     private String address;
     private String postalCode;
+
+    private String gender;
+
     private List<CarDto> carList;
 
 }

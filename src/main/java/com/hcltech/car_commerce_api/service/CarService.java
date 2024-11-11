@@ -2,6 +2,7 @@ package com.hcltech.car_commerce_api.service;
 
 import com.hcltech.car_commerce_api.dao.CarDao;
 import com.hcltech.car_commerce_api.dto.CarDto;
+import com.hcltech.car_commerce_api.dto.ResponseCarDto;
 import com.hcltech.car_commerce_api.entity.Car;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -33,7 +34,7 @@ public class CarService {
     public CarDto toCarDto(Car car){
         return modelMapper.map(car, CarDto.class);
     }
-    
+
     public ResponseCarDto toResponseCarDto(Car car){
         return modelMapper.map(car, ResponseCarDto.class);
     }
@@ -41,8 +42,8 @@ public class CarService {
     public Car toCarEntity(CarDto cardto){
         return modelMapper.map(cardto, Car.class);
     }
-    
-    
+
+
     public void addCar(Car car){
         carDao.addCar(car);
     }

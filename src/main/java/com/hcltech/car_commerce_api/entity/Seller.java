@@ -51,4 +51,8 @@ public class Seller {
     @JoinColumn(name = "seller_id")
     private List<Car> carList;
 
+
+    private String gender;
+
 }
+

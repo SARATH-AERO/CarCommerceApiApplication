@@ -58,4 +58,6 @@ public class Buyer {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "buyer_id")
     private List<PurchasedCar> purchasedCarsList;
+
+    private String gender;
 }
