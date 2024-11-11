@@ -38,8 +38,8 @@ public class SellerController {
     @Operation(
             summary="Add a car to a seller" ,
             description = "Associates a car with a seller using seller's email.")
-    public ResponseEntity<MessageDto> updateSellerCar(@RequestParam String email,@RequestBody CarDto carDto) {
-        return new ResponseEntity<>(sellerService.updateSellerCar(email,carDto), HttpStatus.OK);
+    public ResponseEntity<MessageDto> addSellerCar(@RequestParam String email, @RequestBody CarDto carDto) {
+        return new ResponseEntity<>(sellerService.addSellerCar(email,carDto), HttpStatus.OK);
     }
 
     @DeleteMapping
@@ -60,5 +60,16 @@ public class SellerController {
     {
         return ResponseEntity.ok(sellerService.updateSeller(email,updateSellerDto));
     }
+    
+    @PutMapping("/updateCar")
+    @PreAuthorize("hasRole('ROLE_SELLER')")
+    @Operation(
+            summary="Update seller's specified car details by email id & car Id" ,
+            description = "Update the details of seller's specified car details based on seller's email.")
+    public ResponseEntity<MessageDto> updateCar(@RequestParam String email, @RequestParam int id, @RequestBody CarDto carDTO) {
+        return ResponseEntity.ok(sellerService.updateCar(email, id, carDTO));
+
+    }
+
 
 }
