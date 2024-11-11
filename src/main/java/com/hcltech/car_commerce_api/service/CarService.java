@@ -33,6 +33,10 @@ public class CarService {
     public CarDto toCarDto(Car car){
         return modelMapper.map(car, CarDto.class);
     }
+    
+    public ResponseCarDto toResponseCarDto(Car car){
+        return modelMapper.map(car, ResponseCarDto.class);
+    }
 
     public Car toCarEntity(CarDto cardto){
         return modelMapper.map(cardto, Car.class);
