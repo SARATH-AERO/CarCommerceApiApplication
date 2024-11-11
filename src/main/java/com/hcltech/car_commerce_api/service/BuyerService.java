@@ -66,8 +66,8 @@ public class BuyerService {
         return modelMapper.map(buyerDTO, Buyer.class);
     }
 
-    public List<CarDto> getAllCar() {
-        return carService.getAllCar().stream().map(carService::toCarDto).toList();
+    public List<ResponseCarDto> getAllCar() {
+        return carService.getAllCar().stream().map(carService::toResponseCarDto).toList();
     }
 
     public MessageDto purchaseCar(String email, Integer carId) {
