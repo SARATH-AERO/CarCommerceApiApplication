@@ -46,6 +46,27 @@ public class PurchasedCar {
     protected void onCreate(){
         purchasedDate = LocalDateTime.now();
     }
+    
+    @Column(length = 1)
+    private Integer seatCapacity;
+
+    @Column(length = 7)
+    private String fuelType;
+
+    @Column(length = 7)
+    private String transmission;
+
+    private float mileage;
+
+    private String description;
+
+    private String kmDriven;
+
+    private String location;
+
+    private String carVariant;
+
+    private String hub;
 
 
 }
