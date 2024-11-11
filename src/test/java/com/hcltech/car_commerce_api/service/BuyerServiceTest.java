@@ -144,7 +144,7 @@ class BuyerServiceTest {
     void testGetAllCar_Success() {
         List<Car> cars = List.of(car);
         when(carService.getAllCar()).thenReturn(cars);
-        List<CarDto> carDto = buyerService.getAllCar();
+        List<ResponseCarDto> carDto = buyerService.getAllCar();
         assertEquals(1, carDto.size());
     }
 
