@@ -38,7 +38,7 @@ public class BuyerController {
     @Operation(
             summary="Get list of available cars to purchase by buyer email" ,
             description = "Retrieves the list of cars available for purchase.")
-    public ResponseEntity<List<CarDto>> getAllCars(){
+    public ResponseEntity<List<ResponseCarDto>> getAllCars(){
         return new ResponseEntity<>(buyerService.getAllCar(), HttpStatus.OK);
     }
 
