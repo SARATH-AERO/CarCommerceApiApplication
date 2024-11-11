@@ -15,9 +15,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
 
 class SellerControllerTest {
 
@@ -55,8 +57,9 @@ class SellerControllerTest {
         updateSellerDto = UpdateSellerDto.builder()
                 .firstName("sai").build();
 
-        carDto = CarDto.builder().id(1).brand("AUDI").engineNumber("12345678901234567").build();
+        carDto = CarDto.builder().brand("AUDI").engineNumber("12345678901234567").build();
         messageDto = MessageDto.builder().message("Success").build();
+
     }
 
     @Test
@@ -131,21 +134,37 @@ class SellerControllerTest {
 
     @Test
     @WithMockUser(roles =  "SELLER")
-    void testUpdateSellerCar()  throws Exception{
+    void testAddSellerCar()  throws Exception{
 
-        when(sellerService.updateSellerCar(eq(email),
-                any(CarDto.class))).thenReturn(messageDto);
+        when(sellerService.addSellerCar(eq(email), any(CarDto.class))).thenReturn(messageDto);
 
         mockMvc.perform(put("/api/carCommerceApi/v1/seller")
-                        .param("email",email)
+                        .param("email", email)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(carDto)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.message")
-                        .value("Success"));
+                .andExpect(jsonPath("$.message").value("Success"));
 
-        verify(sellerService, times(1)).updateSellerCar(eq(email),
-                any(CarDto.class));
+        verify(sellerService, times(1)).addSellerCar(eq(email), any(CarDto.class));
+    }
+
+
+    @Test
+    @WithMockUser(roles = "SELLER")
+    void testUpdateCar() throws Exception {
+        int carId = 1;
+        when(sellerService.updateCar(eq(email), eq(carId), any(CarDto.class)))
+                .thenReturn(messageDto);
+
+        mockMvc.perform(put("/api/carCommerceApi/v1/seller/updateCar")
+                        .param("email", email)
+                        .param("id", String.valueOf(carId))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(carDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("Success"));
+
+        verify(sellerService, times(1)).updateCar(eq(email), eq(carId), any(CarDto.class));
     }
 }
 
