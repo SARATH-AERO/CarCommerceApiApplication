@@ -37,6 +37,11 @@ public class CarService {
     public Car toCarEntity(CarDto cardto){
         return modelMapper.map(cardto, Car.class);
     }
+    
+    
+    public void addCar(Car car){
+        carDao.addCar(car);
+    }
 
 
 }
